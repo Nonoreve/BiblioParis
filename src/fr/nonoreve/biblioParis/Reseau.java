@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.function.Supplier;
 
 import fr.nonoreve.biblioParis.LecteurFichier.LigneFichier;
 import fr.nonoreve.biblioParis.doc.Autres;
@@ -143,25 +144,86 @@ public class Reseau {
 	public static void main(String[] args) {
 		List<LigneFichier> doneesBrutes;
 		String cheminFichier;
+		Scanner sc = new Scanner(System.in);
 
 		if (args.length > 0) {
 			if (!checkFichier(args[0]))
 				return;
 			cheminFichier = args[0];
 		} else {
-			Scanner sc = new Scanner(System.in);
 			do {
 				System.out.println("Entrez le nom du fichier : ");
 				cheminFichier = sc.nextLine();
 			} while (!checkFichier(cheminFichier));
-			sc.close();
 		}
 		doneesBrutes = LecteurFichier.getDonneesDepuisFichierCSV(cheminFichier);
 		System.out.println("Lecture de " + doneesBrutes.size() + " lignes dans " + cheminFichier);
 
 		Reseau reseau = new Reseau(doneesBrutes);
-		// TODO systeme d'interactions avec la console
+
+		final String[] commandes = { "stop", "help", "ajoute" };
+		final String[] desc = { "Arrete l'application.", "Affiche l'aide.",
+				"Ajoute un utilisateur, un document ou une bibliotheque. (ajoute <utilisateur|bibliotheque|document> <arguments>)" };
+		System.out.println("\n\nCommandes disponibles : ");
+		for (int i = 0; i < commandes.length; i++) {
+			System.out.print(commandes[i] + " ");
+		}
+		System.out.println();
+
+		boolean stop = false;
+		while (!stop) {
+			System.out.print("$~: ");
+			String[] commandLine = sc.nextLine().split(" ");
+			String command = commandLine[0];
+			if (command.contentEquals("stop"))
+				stop = true;
+			String[] arguments = null;
+			if (commandLine.length > 1) {
+				arguments = new String[commandLine.length - 1];
+				for (int i = 0; i < commandLine.length - 1; i++) {
+					arguments[i] = commandLine[i + 1];
+				}
+			}
+
+			if (command.contentEquals(commandes[1])) { // HELP
+				for (int i = 0; i < desc.length; i++) {
+					System.out.println(commandes[i] + " : " + desc[i]);
+				}
+				continue;
+			}
+
+			if (command.contentEquals(commandes[2])) { // AJOUTE
+				if (arguments == null || arguments.length < 2) {
+					System.out.println("Mauvais nombre d'arguments. (Voir help)");
+				}
+				commandeAjoute(arguments, reseau);
+				continue;
+			}
+
+			if (command.contentEquals("egg")) {
+				System.out.println("Nobody expects the spanish inquisition.");
+				continue;
+			}
+
+		}
 		// TODO faire tous les test necessaires
+		sc.close();
+	}
+
+	private static void commandeAjoute(String[] arguments, Reseau reseau) {
+		if (arguments[0].contentEquals("utilisateur")) {
+			Utilisateur utilisateur = new Utilisateur(nom, prenom, maxEmprunt);
+			reseau.utilisateurs.add(utilisateur);
+			return;
+		}
+		if (arguments[0].contentEquals("bibliotheque")) {
+			
+			return;
+		}
+		if (arguments[0].contentEquals("document")) {
+			
+			return;
+		}
 	}
 
 	private static boolean checkFichier(String cheminFichier) {
