@@ -2,6 +2,7 @@ package fr.nonoreve.biblioParis;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 
@@ -22,7 +23,7 @@ public class Reseau {
 
 	private List<Bibliotheque> bibliotheques;
 	private List<Utilisateur> utilisateurs;
-	private List<Document> documents;
+	private HashMap<String, Document> documents;
 	public static final String typesNames[] = { "livre", "bande dessinee", "partition", "carte", "disque compact",
 			"dvd", "methode", "enregistrement musical", "revue", "autres" };
 
@@ -34,7 +35,7 @@ public class Reseau {
 	public Reseau(List<LigneFichier> doneesBrutes) {
 		this.bibliotheques = new ArrayList<Bibliotheque>();
 		this.utilisateurs = new ArrayList<Utilisateur>();
-		this.documents = new ArrayList<Document>();
+		this.documents = new HashMap<>();
 
 		Bibliotheque aimeCesaire = new Bibliotheque("Aime Cesaire", "", 2);
 		Bibliotheque edmondRostand = new Bibliotheque("Edmond Rostand", "", 3);
@@ -100,7 +101,8 @@ public class Reseau {
 					doc = new Autres(ligne.ean, ligne.titre, ligne.editeur, ligne.date, ligne.prenomAuteur,
 							ligne.nomAuteur, ligne.numeroSerie, ligne.titreSerie);
 				}
-				this.documents.add(doc);
+				if (ligne.ean != null)
+					this.documents.put(ean, doc);
 			} else {
 				System.out.println("Pas de type pour " + ean + ".");
 				pasType++;
@@ -214,10 +216,17 @@ public class Reseau {
 	private static void commandeAjoute(String[] arguments, Reseau reseau) {
 		if (arguments[0].contentEquals("document")) {
 			if (arguments.length < 10) {
-				// les arg sont tous obligatoires sauf l'isbn sinon c beaucoup plus complique a gerer
+				// les arg sont tous obligatoires sauf l'isbn sinon c beaucoup plus complique a
+				// gerer
 				System.out.println(
 						"Mauvais nombre d'arguments. usage : ajouter document <ean> <titre> <editeur> <date> <prenomAuteur> <nomAuteur> <numeroSerie> <titreSerie> [isbn]");
 				return;
+			}
+			for (String ean : reseau.documents.keySet()) {
+				if (ean.contentEquals(arguments[2])) {
+					System.out.println("Impossible de creer le doc. Un document existe deja avec l'ean " + ean);
+					return;
+				}
 			}
 			Integer numeroSerie;
 			try {
@@ -269,6 +278,7 @@ public class Reseau {
 				doc = new Autres(arguments[2], arguments[3], arguments[4], arguments[5], arguments[6], arguments[7],
 						numeroSerie, arguments[9]);
 			}
+			reseau.documents.put(arguments[2], doc); // la verif de l'ean est faite au debut de la fonction
 			System.out.println("Document ajoute : " + doc);
 			return;
 		}
@@ -295,9 +305,7 @@ public class Reseau {
 	 * Liste les documents present dans le reseau
 	 */
 	public void listerDocuments() {
-		for (Document d : documents) {
-			System.out.println(d.toString());
-		}
+		documents.forEach((s, d) -> System.out.println(d.toString()));
 	}
 
 	/**
@@ -307,11 +315,10 @@ public class Reseau {
 	 * @param nom
 	 */
 	public void listerDocumentsNomAuteur(String nomAuteur) {
-
-		for (Document d : documents) {
+		documents.forEach((s, d) -> {
 			if (d.getNomAuteur().equals(nomAuteur))
 				System.out.println(d.toString());
-		}
+		});
 	}
 
 	/**
@@ -321,10 +328,10 @@ public class Reseau {
 	 * @param prenom
 	 */
 	public void listerDocumentsPrenomAuteur(String prenomAuteur) {
-		for (Document d : documents) {
+		documents.forEach((s, d) -> {
 			if (d.getPrenomAuteur().equals(prenomAuteur))
 				System.out.println(d.toString());
-		}
+		});
 	}
 
 	/**
@@ -335,10 +342,10 @@ public class Reseau {
 	 * @param prenom
 	 */
 	public void listerDocumentsNomPrenomAuteur(String nomAuteur, String prenomAuteur) {
-		for (Document d : documents) {
+		documents.forEach((s, d) -> {
 			if (d.getNomAuteur().equals(nomAuteur) && d.getPrenomAuteur().equals(prenomAuteur))
 				System.out.println(d.toString());
-		}
+		});
 	}
 
 	/**
@@ -348,10 +355,10 @@ public class Reseau {
 	 * @param EAN
 	 */
 	public void listerDocumentsEan(String ean) {
-		for (Document d : documents) {
+		documents.forEach((s, d) -> {
 			if (d.getEan().equals(ean))
 				System.out.println(d.toString());
-		}
+		});
 	}
 
 	/**
@@ -365,7 +372,8 @@ public class Reseau {
 	public void NbDocTypeSerie(int debTemps, int finTemps) {
 		int cptAutres = 0, cptBandeDessinee = 0, cptCarte = 0, cptCD = 0, cptJeuDeSociete = 0, cptJeuVideo = 0,
 				cptLivre = 0, cptPartition = 0, cptRevue = 0, cptVinyle = 0;
-		for (Document d : documents) {
+		for (String ean : documents.keySet()) {
+			Document d = documents.get(ean);
 			if (!(d.getDatePublication().equals("?"))) {
 				int datePublicationInt = Integer.parseInt(d.getDatePublication().replaceAll("[^0-9]", ""));
 				if (datePublicationInt >= debTemps && datePublicationInt <= finTemps) {
