@@ -162,5 +162,63 @@ public class Bibliotheque {
 	public String getAdresse() {
 		return adresse;
 	}
+	
+	public void inscrire(Utilisateur util) {
+		lstUtil.add(util);
+	}
+	
+	
+	public void emprunter(Document docu, Utilisateur util) {
+		if (lstUtil.contains(util)) {
+			if(hmDocu.containsKey(docu)) {
+				if(util.getLstDocEmprunte().size() < util.getMaxEmprunt()) {
+					util.getLstDocEmprunte().add(docu);
+					hmDocu.replace(docu , hmDocu.get(docu) -1 );
+					if (hmDocu.get(docu)==0) {
+						hmDocu.remove(docu);
+					}
+				}
+			}
+		}
+	}
+	
+	public void rendre(Document docu, Utilisateur util) {
+		if (lstUtil.contains(util)) {
+			if(util.getLstDocEmprunte().contains(docu)) {
+				util.getLstDocEmprunte().remove(docu);
+				if(hmDocu.containsKey(docu)) {
+					hmDocu.replace(docu, hmDocu.get(docu) +1);
+				}
+				else {
+					hmDocu.put(docu, 1);
+				}
+			}
+		}
+	}
+	
+	public void echanger(Document docu, Bibliotheque biblio) {
+		if (this.getHmDocu().containsKey(docu)) {
+			if (biblio.getHmDocu().containsKey(biblio)) {
+				biblio.getHmDocu().replace(docu, biblio.getHmDocu().get(docu) +1);	
+			}
+			else {
+				biblio.getHmDocu().put(docu, 1);
+			}
+			this.getHmDocu().replace(docu, this.getHmDocu().get(docu) -1);
+			if (this.getHmDocu().get(docu)==0) {
+				this.getHmDocu().remove(docu);
+			}
+		}
+	}
+
+	public HashMap<Document, Integer> getHmDocu() {
+		return hmDocu;
+	}
+
+	public List<Utilisateur> getLstUtil() {
+		return lstUtil;
+	}
+	
+	
 
 }
