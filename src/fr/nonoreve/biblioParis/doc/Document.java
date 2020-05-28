@@ -5,7 +5,7 @@ public abstract class Document {
 	private String ean;
 	private String titre;
 	private String editeur;
-	private String datePublication;
+	private int datePublication;
 	private String titreSerie;
 	private Integer ordreDansSerie;
 	private String prenomAuteur;
@@ -31,7 +31,7 @@ public abstract class Document {
 			this.prenomAuteur = prenomAuteur;
 			this.nomAuteur = nomAuteur;
 			this.editeur = editeur;
-			this.datePublication = datePublication;
+			this.datePublication = Integer.parseInt(datePublication.replaceAll("[^0-9]", ""));
 			this.ordreDansSerie = ordreDansSerie;
 		}
 		throw new NullPointerException("ean field can't be null");
@@ -75,7 +75,7 @@ public abstract class Document {
 	/**
 	 * @return the datePublication
 	 */
-	public String getDatePublication() {
+	public int getDatePublication() {
 		return datePublication;
 	}
 

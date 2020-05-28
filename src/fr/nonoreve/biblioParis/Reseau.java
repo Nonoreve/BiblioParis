@@ -6,11 +6,13 @@ import java.util.List;
 import java.util.Scanner;
 
 import fr.nonoreve.biblioParis.LecteurFichier.LigneFichier;
+import fr.nonoreve.biblioParis.doc.Document;
 
 public class Reseau {
 
 	private List<Bibliotheque> bibliotheques;
 	private List<Utilisateur> utilisateurs;
+	private List<Document> documents;
 
 	/**
 	 * Construit le reseau a partir des donnes initiales
@@ -171,21 +173,14 @@ public class Reseau {
 		return true;
 	}
 
-	/**
-	 * Renvoie le nombre de document disponible dans le reseau
-	 * 
-	 * @return int nb, nombre de document dans la bibliotheque
-	 */
-	public int getNombreDocuments() {
-
-		return 1;
-	}
 
 	/**
 	 * Liste les documents present dans le reseau
 	 */
-	public void listerDocument() {
-
+	public void listerDocuments(){
+		for (Document d : documents){
+			System.out.println(d.toString());
+		}
 	}
 
 	/**
@@ -194,9 +189,14 @@ public class Reseau {
 	 * 
 	 * @param nom
 	 */
-	public void listerDocumentNomAuteur(String nom) {
-
+	public void listerDocumentsNomAuteur(String nomAuteur){
+		
+		for (Document d : documents){
+			if (d.getNomAuteur().equals(nomAuteur))
+				System.out.println(d.toString());
+		}
 	}
+
 
 	/**
 	 * Liste les documents present dans le reseau avec le prenom de l'auteur comme
@@ -204,8 +204,11 @@ public class Reseau {
 	 * 
 	 * @param prenom
 	 */
-	public void listerDocumentPrenomAuteur(String prenom) {
-
+	public void listerDocumentsPrenomAuteur(String prenomAuteur){
+		for (Document d : documents){
+			if (d.getPrenomAuteur().equals(prenomAuteur))
+				System.out.println(d.toString());
+		}
 	}
 
 	/**
@@ -215,8 +218,11 @@ public class Reseau {
 	 * @param nom
 	 * @param prenom
 	 */
-	public void listerDocumentNomPrenomAuteur(String nom, String prenom) {
-
+	public void listerDocumentsNomPrenomAuteur(String nomAuteur, String prenomAuteur){
+		for (Document d : documents){
+			if (d.getNomAuteur().equals(nomAuteur)  && d.getPrenomAuteur().equals(prenomAuteur))
+				System.out.println(d.toString());
+		}
 	}
 
 	/**
@@ -225,8 +231,11 @@ public class Reseau {
 	 * 
 	 * @param EAN
 	 */
-	public void listerDocumentEAN(String EAN) {
-
+	public void listerDocumentsEan(String ean){
+		for (Document d : documents){
+			if (d.getEan().equals(ean))
+				System.out.println(d.toString());
+		}
 	}
 
 	/**
@@ -237,8 +246,58 @@ public class Reseau {
 	 * @param finTemps
 	 * @return
 	 */
-	public int nbDocTypeTemps(String debTemps, String finTemps) {
-		return 1;
+	public void NbDocTypeSerie(int debTemps, int finTemps){
+		int cptAutres = 0, cptBandeDessinee = 0, cptCarte = 0, cptCD = 0, cptJeuDeSociete = 0, cptJeuVideo = 0, cptLivre = 0, cptPartition = 0, cptRevue = 0, cptVinyle = 0;
+		for (Document d : documents){
+			if (d.getDatePublication()>= debTemps && d.getDatePublication()<= finTemps) {
+				String typeDocu = d.getClass().getSimpleName();
+				switch(typeDocu) {
+				  case "Autres":
+					  cptAutres++;
+				    break;
+				  case "BandeDessinee":
+					  cptBandeDessinee++;
+				    break;
+				  case "Carte":
+					  cptCarte++;
+				    break;
+				  case "CD":
+					  cptCD++;
+				    break;
+				  case "JeuDeSociete":
+					  cptJeuDeSociete++;
+				    break;
+				  case "JeuVideo":
+					  cptJeuVideo++;
+				    break;
+				  case "Livre":
+					  cptLivre++;
+				    break;
+				  case "Partition":
+					  cptPartition++;
+				    break;
+				  case "Revue":
+					  cptRevue++;
+				    break;
+				  case "Vinyle":
+					  cptVinyle++;
+				    break;
+				  default:
+					  System.out.print("");
+				}
+			}
+		}
+		System.out.println("Autres : " + cptAutres);
+		System.out.println("BandeDessinee : " + cptBandeDessinee);
+		System.out.println("Carte : " + cptCarte);
+		System.out.println("CD : " + cptCD);
+		System.out.println("JeuDeSociete : " + cptJeuDeSociete);
+		System.out.println("JeuVideo : " + cptJeuVideo);
+		System.out.println("Livre : " + cptLivre);
+		System.out.println("Partition : " + cptPartition);
+		System.out.println("Revue : " + cptRevue);
+		System.out.println("Vinyle : " + cptVinyle);
 	}
+
 
 }

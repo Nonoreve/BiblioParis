@@ -1,6 +1,9 @@
 package fr.nonoreve.biblioParis;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+
 
 import fr.nonoreve.biblioParis.doc.Document;
 
@@ -8,32 +11,33 @@ public class Bibliotheque {
 
 	private String nom;
 	private String adresse;
-	private List<Document> documents;
+	private HashMap<Document, Integer> hmDocu;
+	private List<Utilisateur> lstUtil;
 
 	public Bibliotheque(String nom, String adresse) {
 		this.nom = nom;
 		this.adresse = adresse;
+		this.hmDocu = new HashMap<Document,Integer>();
+		this.lstUtil = new ArrayList<Utilisateur>();
 	}
 
-	public void ajouterDocument(Document document) {
-		this.documents.add(document);
-	}
-
-	/**
-	 * Renvoie le nombre de document disponible dans la bibliotheque
-	 * 
-	 * @return int nb, nombre de document dans la bibliotheque
-	 */
-	public int getNombreDocuments() {
-
-		return 1;
+	public void ajouterDocument(Document document,int nb) {
+		if (hmDocu.containsKey(document)) {
+			nb += hmDocu.get(document);
+			this.hmDocu.put(document, nb);
+		}
+		else {
+			this.hmDocu.put(document, nb);
+		}
 	}
 
 	/**
 	 * Liste les documents present dans la bibliotheque
 	 */
-	public void listerDocument() {
-
+	public void listerDocuments(){
+		for (Document d : hmDocu.keySet()){
+			System.out.println(d.toString());
+		}
 	}
 
 	/**
@@ -42,8 +46,12 @@ public class Bibliotheque {
 	 * 
 	 * @param nom
 	 */
-	public void listerDocumentNomAuteur(String nom) {
-
+	public void listerDocumentsNomAuteur(String nomAuteur){
+		
+		for (Document d : hmDocu.keySet()){
+			if (d.getNomAuteur().equals(nomAuteur))
+				System.out.println(d.toString());
+		}
 	}
 
 	/**
@@ -52,8 +60,11 @@ public class Bibliotheque {
 	 * 
 	 * @param prenom
 	 */
-	public void listerDocumentPrenomAuteur(String prenom) {
-
+	public void listerDocumentsPrenomAuteur(String prenomAuteur){
+		for (Document d : hmDocu.keySet()){
+			if (d.getPrenomAuteur().equals(prenomAuteur))
+				System.out.println(d.toString());
+		}
 	}
 
 	/**
@@ -63,8 +74,11 @@ public class Bibliotheque {
 	 * @param nom
 	 * @param prenom
 	 */
-	public void listerDocumentNomPrenomAuteur(String nom, String prenom) {
-
+	public void listerDocumentsNomPrenomAuteur(String nomAuteur, String prenomAuteur){
+		for (Document d : hmDocu.keySet()){
+			if (d.getNomAuteur().equals(nomAuteur)  && d.getPrenomAuteur().equals(prenomAuteur))
+				System.out.println(d.toString());
+		}
 	}
 
 	/**
@@ -73,8 +87,11 @@ public class Bibliotheque {
 	 * 
 	 * @param EAN
 	 */
-	public void listerDocumentEAN(String EAN) {
-
+	public void listerDocumentsEan(String ean){
+		for (Document d : hmDocu.keySet()){
+			if (d.getEan().equals(ean))
+				System.out.println(d.toString());
+		}
 	}
 
 	/**
@@ -85,8 +102,57 @@ public class Bibliotheque {
 	 * @param finTemps
 	 * @return
 	 */
-	public int nbDocTypeTemps(String debTemps, String finTemps) {
-		return 1;
+	public void NbDocTypeSerie(int debTemps, int finTemps){
+		int cptAutres = 0, cptBandeDessinee = 0, cptCarte = 0, cptCD = 0, cptJeuDeSociete = 0, cptJeuVideo = 0, cptLivre = 0, cptPartition = 0, cptRevue = 0, cptVinyle = 0;
+		for (Document d : hmDocu.keySet()){
+			if (d.getDatePublication()>= debTemps && d.getDatePublication()<= finTemps) {
+				String typeDocu = d.getClass().getSimpleName();
+				switch(typeDocu) {
+				  case "Autres":
+					  cptAutres++;
+				    break;
+				  case "BandeDessinee":
+					  cptBandeDessinee++;
+				    break;
+				  case "Carte":
+					  cptCarte++;
+				    break;
+				  case "CD":
+					  cptCD++;
+				    break;
+				  case "JeuDeSociete":
+					  cptJeuDeSociete++;
+				    break;
+				  case "JeuVideo":
+					  cptJeuVideo++;
+				    break;
+				  case "Livre":
+					  cptLivre++;
+				    break;
+				  case "Partition":
+					  cptPartition++;
+				    break;
+				  case "Revue":
+					  cptRevue++;
+				    break;
+				  case "Vinyle":
+					  cptVinyle++;
+				    break;
+				  default:
+					  System.out.print("");
+				}
+			}
+		}
+		System.out.println("Autres : " + cptAutres);
+		System.out.println("BandeDessinee : " + cptBandeDessinee);
+		System.out.println("Carte : " + cptCarte);
+		System.out.println("CD : " + cptCD);
+		System.out.println("JeuDeSociete : " + cptJeuDeSociete);
+		System.out.println("JeuVideo : " + cptJeuVideo);
+		System.out.println("Livre : " + cptLivre);
+		System.out.println("Partition : " + cptPartition);
+		System.out.println("Revue : " + cptRevue);
+		System.out.println("Vinyle : " + cptVinyle);
 	}
 
 	public String getNom() {
