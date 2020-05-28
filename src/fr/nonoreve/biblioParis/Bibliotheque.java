@@ -95,6 +95,13 @@ public class Bibliotheque {
 				System.out.println(d.toString());
 		}
 	}
+	// TODO
+	public void listerDocumentsIsbn(String isbn) {
+		for (Document d : hmDocu.keySet()) {
+			if (d.getEan().equals(isbn))
+				System.out.println(d.toString());
+		}
+	}
 
 	/**
 	 * Renvoie le nombre de document par type disponible dans la bibliotheque selon

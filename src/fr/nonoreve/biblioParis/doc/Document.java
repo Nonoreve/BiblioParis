@@ -35,8 +35,6 @@ public abstract class Document {
 		this.titreSerie = titreSerie;
 	}
 
-
-
 	/**
 	 * @return the ean
 	 */
@@ -85,7 +83,7 @@ public abstract class Document {
 	public Integer getOrdreDansSerie() {
 		return ordreDansSerie;
 	}
-	
+
 	public String getTitreSerie() {
 		return titreSerie;
 	}

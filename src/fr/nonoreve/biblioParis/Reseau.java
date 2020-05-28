@@ -60,16 +60,16 @@ public class Reseau {
 				String type = ligne.type.toLowerCase();
 				if (type.contains(typesNames[0])) { // 5860
 					typesQuantities[0]++;
-					doc = new Livre(ligne.ean, ligne.titre, ligne.editeur, ligne.date, ligne.prenomAuteur,
+					doc = new Livre(ligne.ean, ligne.isbn, ligne.titre, ligne.editeur, ligne.date, ligne.prenomAuteur,
 							ligne.nomAuteur, ligne.numeroSerie, ligne.titreSerie);
 				} else if (type.contains(typesNames[1]) || type.contains("bd")) { // 594
 					typesQuantities[1]++;
-					doc = new BandeDessinee(ligne.ean, ligne.titre, ligne.editeur, ligne.date, ligne.prenomAuteur,
-							ligne.nomAuteur, ligne.numeroSerie, ligne.titreSerie);
+					doc = new BandeDessinee(ligne.ean, ligne.isbn, ligne.titre, ligne.editeur, ligne.date,
+							ligne.prenomAuteur, ligne.nomAuteur, ligne.numeroSerie, ligne.titreSerie);
 				} else if (type.contains(typesNames[2])) { // 236
 					typesQuantities[2]++;
-					doc = new Partition(ligne.ean, ligne.titre, ligne.editeur, ligne.date, ligne.prenomAuteur,
-							ligne.nomAuteur, ligne.numeroSerie, ligne.titreSerie);
+					doc = new Partition(ligne.ean, ligne.isbn, ligne.titre, ligne.editeur, ligne.date,
+							ligne.prenomAuteur, ligne.nomAuteur, ligne.numeroSerie, ligne.titreSerie);
 				} else if (type.contains(typesNames[3])) { // 18
 					typesQuantities[3]++;
 					doc = new Carte(ligne.ean, ligne.titre, ligne.editeur, ligne.date, ligne.prenomAuteur,
@@ -84,11 +84,11 @@ public class Reseau {
 							ligne.nomAuteur, ligne.numeroSerie, ligne.titreSerie);
 				} else if (type.contains(typesNames[6])) { // 156
 					typesQuantities[6]++;
-					doc = new Methode(ligne.ean, ligne.titre, ligne.editeur, ligne.date, ligne.prenomAuteur,
+					doc = new Methode(ligne.ean, ligne.isbn, ligne.titre, ligne.editeur, ligne.date, ligne.prenomAuteur,
 							ligne.nomAuteur, ligne.numeroSerie, ligne.titreSerie);
 				} else if (type.contains(typesNames[7])) { // 67
 					typesQuantities[7]++;
-					doc = new EnregistrementMusical(ligne.ean, ligne.titre, ligne.editeur, ligne.date,
+					doc = new EnregistrementMusical(ligne.ean, ligne.isbn, ligne.titre, ligne.editeur, ligne.date,
 							ligne.prenomAuteur, ligne.nomAuteur, ligne.numeroSerie, ligne.titreSerie);
 				} else if (type.contains(typesNames[8])) { // 17
 					typesQuantities[8]++;
@@ -213,54 +213,63 @@ public class Reseau {
 
 	private static void commandeAjoute(String[] arguments, Reseau reseau) {
 		if (arguments[0].contentEquals("document")) {
-			if (arguments.length <= 2) {
-				System.out.println("Mauvais nombre d'arguments. (Voir help)");
+			if (arguments.length < 10) {
+				// les arg sont tous obligatoires sauf l'isbn sinon c beaucoup plus complique a gerer
+				System.out.println(
+						"Mauvais nombre d'arguments. usage : ajouter document <ean> <titre> <editeur> <date> <prenomAuteur> <nomAuteur> <numeroSerie> <titreSerie> [isbn]");
 				return;
+			}
+			Integer numeroSerie;
+			try {
+				numeroSerie = Integer.parseInt(arguments[8]);
+			} catch (Exception exception) {
+				numeroSerie = null;
 			}
 			String type = arguments[1];
 			Document doc;
-			if (type.contains(typesNames[0])) { // 5860
-				
-				doc = new Livre(ligne.ean, ligne.titre, ligne.editeur, ligne.date, ligne.prenomAuteur,
-						ligne.nomAuteur, ligne.numeroSerie, ligne.titreSerie);
-			} else if (type.contains(typesNames[1]) || type.contains("bd")) { // 594
-				
-				doc = new BandeDessinee(ligne.ean, ligne.titre, ligne.editeur, ligne.date, ligne.prenomAuteur,
-						ligne.nomAuteur, ligne.numeroSerie, ligne.titreSerie);
-			} else if (type.contains(typesNames[2])) { // 236
-				
-				doc = new Partition(ligne.ean, ligne.titre, ligne.editeur, ligne.date, ligne.prenomAuteur,
-						ligne.nomAuteur, ligne.numeroSerie, ligne.titreSerie);
-			} else if (type.contains(typesNames[3])) { // 18
-				
-				doc = new Carte(ligne.ean, ligne.titre, ligne.editeur, ligne.date, ligne.prenomAuteur,
-						ligne.nomAuteur, ligne.numeroSerie, ligne.titreSerie);
-			} else if (type.contains(typesNames[4])) { // 2257
-				
-				doc = new CD(ligne.ean, ligne.titre, ligne.editeur, ligne.date, ligne.prenomAuteur, ligne.nomAuteur,
-						ligne.numeroSerie, ligne.titreSerie);
-			} else if (type.contains(typesNames[5])) { // 715
-				
-				doc = new DVD(ligne.ean, ligne.titre, ligne.editeur, ligne.date, ligne.prenomAuteur,
-						ligne.nomAuteur, ligne.numeroSerie, ligne.titreSerie);
-			} else if (type.contains(typesNames[6])) { // 156
-				
-				doc = new Methode(ligne.ean, ligne.titre, ligne.editeur, ligne.date, ligne.prenomAuteur,
-						ligne.nomAuteur, ligne.numeroSerie, ligne.titreSerie);
-			} else if (type.contains(typesNames[7])) { // 67
-				
-				doc = new EnregistrementMusical(ligne.ean, ligne.titre, ligne.editeur, ligne.date,
-						ligne.prenomAuteur, ligne.nomAuteur, ligne.numeroSerie, ligne.titreSerie);
-			} else if (type.contains(typesNames[8])) { // 17
-				
-				doc = new Revue(ligne.ean, ligne.titre, ligne.editeur, ligne.date, ligne.prenomAuteur,
-						ligne.nomAuteur, ligne.numeroSerie, ligne.titreSerie);
+			if (type.contains(typesNames[0])) {
+				doc = new Livre(arguments[2], arguments.length > 10 ? arguments[10] : null, arguments[3], arguments[4],
+						arguments[5], arguments[6], arguments[7], numeroSerie, arguments[9]);
+			} else if (type.contains(typesNames[1]) || type.contains("bd")) {
+
+				doc = new BandeDessinee(arguments[2], arguments.length > 10 ? arguments[10] : null, arguments[3],
+						arguments[4], arguments[5], arguments[6], arguments[7], numeroSerie, arguments[9]);
+			} else if (type.contains(typesNames[2])) {
+
+				doc = new Partition(arguments[2], arguments.length > 10 ? arguments[10] : null, arguments[3],
+						arguments[4], arguments[5], arguments[6], arguments[7], numeroSerie, arguments[9]);
+			} else if (type.contains(typesNames[3])) {
+
+				doc = new Carte(arguments[2], arguments[3], arguments[4], arguments[5], arguments[6], arguments[7],
+						numeroSerie, arguments[9]);
+			} else if (type.contains(typesNames[4])) {
+
+				doc = new CD(arguments[2], arguments[3], arguments[4], arguments[5], arguments[6], arguments[7],
+						numeroSerie, arguments[9]);
+			} else if (type.contains(typesNames[5])) {
+
+				doc = new DVD(arguments[2], arguments[3], arguments[4], arguments[5], arguments[6], arguments[7],
+						numeroSerie, arguments[9]);
+			} else if (type.contains(typesNames[6])) {
+
+				doc = new Methode(arguments[2], arguments.length > 10 ? arguments[10] : null, arguments[3],
+						arguments[4], arguments[5], arguments[6], arguments[7], numeroSerie, arguments[9]);
+			} else if (type.contains(typesNames[7])) {
+
+				doc = new EnregistrementMusical(arguments[2], arguments.length > 10 ? arguments[10] : null,
+						arguments[3], arguments[4], arguments[5], arguments[6], arguments[7], numeroSerie,
+						arguments[9]);
+			} else if (type.contains(typesNames[8])) {
+
+				doc = new Revue(arguments[2], arguments[3], arguments[4], arguments[5], arguments[6], arguments[7],
+						numeroSerie, arguments[9]);
 			} else {
 				// System.out.println(ean + " avec type " + ligne.type + " place dans autres.");
-				
-				doc = new Autres(ligne.ean, ligne.titre, ligne.editeur, ligne.date, ligne.prenomAuteur,
-						ligne.nomAuteur, ligne.numeroSerie, ligne.titreSerie);
+
+				doc = new Autres(arguments[2], arguments[3], arguments[4], arguments[5], arguments[6], arguments[7],
+						numeroSerie, arguments[9]);
 			}
+			System.out.println("Document ajoute : " + doc);
 			return;
 		}
 		if (arguments[0].contentEquals("bibliotheque")) {
