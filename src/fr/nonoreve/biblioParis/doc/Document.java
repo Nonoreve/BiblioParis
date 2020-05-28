@@ -8,7 +8,7 @@ public class Document {
 	private String prenomAuteur;
 	private String nomAuteur;
 	private String editeur;
-	private String datePublication;
+	private int datePublication;
 	private String ordreDansSerie;
 
 	/**
@@ -32,7 +32,7 @@ public class Document {
 			this.prenomAuteur = prenomAuteur;
 			this.nomAuteur = nomAuteur;
 			this.editeur = editeur;
-			this.datePublication = datePublication;
+			this.datePublication = Integer.parseInt(datePublication.replaceAll("[^0-9]", ""));
 			this.ordreDansSerie = ordreDansSerie;
 		}
 		throw new NullPointerException("ean field can't be null");
@@ -83,7 +83,7 @@ public class Document {
 	/**
 	 * @return the datePublication
 	 */
-	public String getDatePublication() {
+	public int getDatePublication() {
 		return datePublication;
 	}
 
