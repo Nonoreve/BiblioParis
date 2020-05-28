@@ -35,11 +35,11 @@ public class Reseau {
 		this.utilisateurs = new ArrayList<Utilisateur>();
 		this.documents = new ArrayList<Document>();
 
-		Bibliotheque aimeCesaire = new Bibliotheque("Aime Cesaire", "",2);
-		Bibliotheque edmondRostand = new Bibliotheque("Edmond Rostand", "",3);
-		Bibliotheque jeanPierreMelville = new Bibliotheque("Jean Pierre Melville", "",3);
-		Bibliotheque oscarWilde = new Bibliotheque("Oscar Wilde", "",4);
-		Bibliotheque saintSimon = new Bibliotheque("Saint Simon", "",6);
+		Bibliotheque aimeCesaire = new Bibliotheque("Aime Cesaire", "", 2);
+		Bibliotheque edmondRostand = new Bibliotheque("Edmond Rostand", "", 3);
+		Bibliotheque jeanPierreMelville = new Bibliotheque("Jean Pierre Melville", "", 3);
+		Bibliotheque oscarWilde = new Bibliotheque("Oscar Wilde", "", 4);
+		Bibliotheque saintSimon = new Bibliotheque("Saint Simon", "", 6);
 
 		int pasEan = 0;
 		int pasType = 0;
@@ -161,9 +161,9 @@ public class Reseau {
 
 		Reseau reseau = new Reseau(doneesBrutes);
 
-		final String[] commandes = { "stop", "help", "ajoute" };
+		final String[] commandes = { "stop", "help", "ajoute", "inscrire" };
 		final String[] desc = { "Arrete l'application.", "Affiche l'aide.",
-				"Ajoute un utilisateur, un document ou une bibliotheque. (ajoute <utilisateur|bibliotheque|document> <arguments>)" };
+				"Ajoute un utilisateur, un document ou une bibliotheque. (ajoute <document|bibliotheque|personne> <arguments>)", "" };
 		System.out.println("\n\nCommandes disponibles : ");
 		for (int i = 0; i < commandes.length; i++) {
 			System.out.print(commandes[i] + " ");
@@ -193,7 +193,7 @@ public class Reseau {
 			}
 
 			if (command.contentEquals(commandes[2])) { // AJOUTE
-				if (arguments == null || arguments.length < 2) {
+				if (arguments == null || arguments.length <= 1) {
 					System.out.println("Mauvais nombre d'arguments. (Voir help)");
 				}
 				commandeAjoute(arguments, reseau);
@@ -211,16 +211,15 @@ public class Reseau {
 	}
 
 	private static void commandeAjoute(String[] arguments, Reseau reseau) {
-		if (arguments[0].contentEquals("utilisateur")) {
-			Utilisateur utilisateur = new Utilisateur(nom, prenom, maxEmprunt);
-			reseau.utilisateurs.add(utilisateur);
-			return;
-		}
-		if (arguments[0].contentEquals("bibliotheque")) {
+		if (arguments[0].contentEquals("document")) {
 			
 			return;
 		}
-		if (arguments[0].contentEquals("document")) {
+		if (arguments[0].contentEquals("bibliotheque")) {
+
+			return;
+		}
+		if (arguments[0].contentEquals("personne")) {
 			
 			return;
 		}
