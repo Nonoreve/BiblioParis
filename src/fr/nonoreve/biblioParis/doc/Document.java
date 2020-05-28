@@ -9,6 +9,7 @@ public abstract class Document {
 	private Integer ordreDansSerie;
 	private String prenomAuteur;
 	private String nomAuteur;
+	private String titreSerie;
 
 	/**
 	 * Cree un nouveau document toutes les valeurs peuvent etre nulles sauf ean
@@ -23,7 +24,7 @@ public abstract class Document {
 	 * @param ordreDansSerie
 	 */
 	public Document(String ean, String titre, String editeur, String datePublication, String prenomAuteur,
-			String nomAuteur, Integer ordreDansSerie) {
+			String nomAuteur, Integer ordreDansSerie, String titreSerie) {
 		this.ean = ean;
 		this.titre = titre;
 		this.prenomAuteur = prenomAuteur;
@@ -31,7 +32,10 @@ public abstract class Document {
 		this.editeur = editeur;
 		this.datePublication = datePublication;
 		this.ordreDansSerie = ordreDansSerie;
+		this.titreSerie = titreSerie;
 	}
+
+
 
 	/**
 	 * @return the ean
@@ -81,5 +85,8 @@ public abstract class Document {
 	public Integer getOrdreDansSerie() {
 		return ordreDansSerie;
 	}
-
+	
+	public String getTitreSerie() {
+		return titreSerie;
+	}
 }
