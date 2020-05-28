@@ -6,7 +6,6 @@ public abstract class Document {
 	private String titre;
 	private String editeur;
 	private int datePublication;
-	private String titreSerie;
 	private Integer ordreDansSerie;
 	private String prenomAuteur;
 	private String nomAuteur;
@@ -77,13 +76,6 @@ public abstract class Document {
 	 */
 	public int getDatePublication() {
 		return datePublication;
-	}
-
-	/**
-	 * @return the titreSerie
-	 */
-	public String getTitreSerie() {
-		return titreSerie;
 	}
 
 	/**

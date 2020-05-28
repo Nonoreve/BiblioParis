@@ -33,66 +33,74 @@ public class Reseau {
 		int pasType = 0;
 		int typeInconnu = 0;
 		int types[] = { 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-		int sousTypes[] = { 0, 0, 0, 0};
-		int sousType = 0;
 
 		for (LigneFichier ligne : doneesBrutes) {
 			if (ligne.ean != null && ligne.ean.length() > 0) {
 				if (ligne.type != null && ligne.type.length() > 0) {
 					String type = ligne.type.toLowerCase();
-					if (type.contains("livre")) {
+					if (type.contains("livre")) { // 3366
+						types[0]++;
 						if (type.contains("jeunesse")) {
-							sousTypes[0]++;
 							continue;
 						}
-						if (type.contains("pour adulte")) {
-							sousTypes[1]++;
+						if (type.contains("adulte")) {
 							continue;
 						}
 						if (type.contains("fonds specialises")) {
-							sousTypes[2]++;
 							continue;
 						}
 						if (type.contains("langue etrangere")) {
-							sousTypes[3]++;
 							continue;
 						}
-						if (!type.contentEquals("livre")) {
-							System.out.println("Sous type : " + type);
-							sousType++;
+						if (type.contains("gros caracteres")) {
+							continue;
 						}
-						types[0]++;
 						continue;
 					}
-					if (type.contains("bande dessinee")) {
+					if (type.contains("bande dessinee")) { // 442
 						types[1]++;
 						continue;
 					}
-					if (type.contains("partition")) {
+					if (type.contains("partition")) { // 52
 						types[2]++;
 						continue;
 					}
-					if (type.contains("carte")) {
+					if (type.contains("carte")) { // 12
 						types[3]++;
 						continue;
 					}
-					if (type.contains("disque compact")) {
+					if (type.contains("disque compact")) { // 1054
 						types[4]++;
 						continue;
 					}
-					if (type.contains("dvd")) {
+					if (type.contains("dvd")) { // 614
 						types[5]++;
+						if (type.contains("jeunesse")) {
+							continue;
+						}
+						if (type.contains("dvd-video tous publics")) {
+							continue;
+						}
 						continue;
 					}
-					if (type.contains("methode")) {
+					if (type.contains("methode")) { // 74
 						types[6]++;
+						if (type.contains("langue")) {
+							continue;
+						}
+						if (type.contains("musicale")) {
+							continue;
+						}
 						continue;
 					}
-					if (type.contains("enregistrement musical")) {
+					if (type.contains("enregistrement musical")) { // 49
 						types[7]++;
+						if (type.contains("jeunesse")) {
+							continue;
+						}
 						continue;
 					}
-					if (type.contains("usuels")) {
+					if (type.contains("usuels")) { // 14
 						types[8]++;
 						continue;
 					}
@@ -118,17 +126,11 @@ public class Reseau {
 			}
 		}
 		System.out.println("Documents sans ean : " + pasEan + ". Documents sans type : " + pasType
-				+ ". Documents type autres : " + typeInconnu + ". Sous types : " + sousType);
+				+ ". Documents type autres : " + typeInconnu);
 		
 		System.out.print("Quantite pour chaque types : ");
 		for (int i = 0; i < types.length; i++) {
 			System.out.print("" + types[i] + ' ');
-		}
-		System.out.println();
-
-		System.out.print("Quantite pour chaque sous types : ");
-		for (int i = 0; i < sousTypes.length; i++) {
-			System.out.print("" + sousTypes[i] + ' ');
 		}
 		System.out.println();
 
