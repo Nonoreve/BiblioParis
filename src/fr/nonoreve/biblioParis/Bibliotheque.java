@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import fr.nonoreve.biblioParis.doc.Document;
+import fr.nonoreve.biblioParis.doc.ISBNable;
 
 public class Bibliotheque {
 
@@ -95,11 +96,14 @@ public class Bibliotheque {
 				System.out.println(d.toString());
 		}
 	}
-	// TODO
+
 	public void listerDocumentsIsbn(String isbn) {
 		for (Document d : hmDocu.keySet()) {
-			if (d.getEan().equals(isbn))
-				System.out.println(d.toString());
+			if (d instanceof ISBNable) {
+				ISBNable i = (ISBNable) d;
+				if (i.getISBN().contentEquals(isbn))
+					System.out.println(d.toString());
+			}
 		}
 	}
 
@@ -115,49 +119,48 @@ public class Bibliotheque {
 		int cptAutres = 0, cptBandeDessinee = 0, cptCarte = 0, cptCD = 0, cptDVD = 0, cptEnregistrementMusical = 0,
 				cptLivre = 0, cptPartition = 0, cptRevue = 0, cptMethode = 0;
 		for (Document d : hmDocu.keySet()) {
-			if (!(d.getDatePublication().equals("?"))){
+			if (!(d.getDatePublication().equals("?"))) {
 				int datePublicationInt = Integer.parseInt(d.getDatePublication().replaceAll("[^0-9]", ""));
 				if (datePublicationInt >= debTemps && datePublicationInt <= finTemps) {
 					String typeDocu = d.getClass().getSimpleName();
 					switch (typeDocu) {
-						case "Autres":
-							cptAutres++;
-							break;
-						case "BandeDessinee":
-							cptBandeDessinee++;
-							break;
-						case "Carte":
-							cptCarte++;
-							break;
-						case "CD":
-							cptCD++;
-							break;
-						case "DVD":
-							cptDVD++;
-							break;
-						case "EnregistrementMusical":
-							cptEnregistrementMusical++;
-							break;
-						case "Livre":
-							cptLivre++;
-							break;
-						case "Methode":
-							cptMethode++;
-							break;
-						case "Partition":
-							cptPartition++;
-							break;
-						case "Revue":
-							cptRevue++;
-							break;
+					case "Autres":
+						cptAutres++;
+						break;
+					case "BandeDessinee":
+						cptBandeDessinee++;
+						break;
+					case "Carte":
+						cptCarte++;
+						break;
+					case "CD":
+						cptCD++;
+						break;
+					case "DVD":
+						cptDVD++;
+						break;
+					case "EnregistrementMusical":
+						cptEnregistrementMusical++;
+						break;
+					case "Livre":
+						cptLivre++;
+						break;
+					case "Methode":
+						cptMethode++;
+						break;
+					case "Partition":
+						cptPartition++;
+						break;
+					case "Revue":
+						cptRevue++;
+						break;
 
-						default:
-							System.out.print("");
+					default:
+						System.out.print("");
 					}
 				}
 			}
-			
-			
+
 		}
 		System.out.println("Autres : " + cptAutres);
 		System.out.println("BandeDessinee : " + cptBandeDessinee);
@@ -179,25 +182,23 @@ public class Bibliotheque {
 	public String getAdresse() {
 		return adresse;
 	}
-	
+
 	public Utilisateur inscrire(Personne pers) {
 		Utilisateur util = new Utilisateur(pers, this, this.maxEmprunt);
 		pers.getLstCarte().add(util);
 		lstUtil.add(util);
 		return util;
 	}
-	
-		
+
 	public void echanger(Document docu, Bibliotheque biblio) {
 		if (this.getHmDocu().containsKey(docu)) {
 			if (biblio.getHmDocu().containsKey(biblio)) {
-				biblio.getHmDocu().replace(docu, biblio.getHmDocu().get(docu) +1);	
-			}
-			else {
+				biblio.getHmDocu().replace(docu, biblio.getHmDocu().get(docu) + 1);
+			} else {
 				biblio.getHmDocu().put(docu, 1);
 			}
-			this.getHmDocu().replace(docu, this.getHmDocu().get(docu) -1);
-			if (this.getHmDocu().get(docu)==0) {
+			this.getHmDocu().replace(docu, this.getHmDocu().get(docu) - 1);
+			if (this.getHmDocu().get(docu) == 0) {
 				this.getHmDocu().remove(docu);
 			}
 		}
@@ -210,10 +211,10 @@ public class Bibliotheque {
 	public List<Utilisateur> getLstUtil() {
 		return lstUtil;
 	}
-	
-	public void listerDocumentsSerie(String serie){
+
+	public void listerDocumentsSerie(String serie) {
 		List<Document> lstDocuTrie = new ArrayList<Document>();
-		for (Document d : hmDocu.keySet()){
+		for (Document d : hmDocu.keySet()) {
 			if (d.getTitreSerie().equals(serie))
 				lstDocuTrie.add(d);
 		}
@@ -224,7 +225,5 @@ public class Bibliotheque {
 			}
 		});
 	}
-	
-	
 
 }
