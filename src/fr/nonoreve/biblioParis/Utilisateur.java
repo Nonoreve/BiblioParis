@@ -5,7 +5,7 @@ import java.util.List;
 
 import fr.nonoreve.biblioParis.doc.Document;
 
-public class Utilisateur extends Personne{
+public class Utilisateur {
 
 	private Personne pers;
 	private Bibliotheque biblio;
@@ -13,8 +13,7 @@ public class Utilisateur extends Personne{
 	private List<Document> lstDocEmprunte;
 	
 
-	public Utilisateur(String nom, String prenom, Personne pers, Bibliotheque biblio, int maxEmprunt) {
-		super(nom,prenom);
+	public Utilisateur(Personne pers, Bibliotheque biblio, int maxEmprunt) {
 		this.pers = pers;
 		this.biblio = biblio;
 		this.maxEmprunt = maxEmprunt;

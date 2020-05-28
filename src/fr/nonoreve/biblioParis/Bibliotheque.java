@@ -174,7 +174,7 @@ public class Bibliotheque {
 	}
 	
 	public Utilisateur inscrire(Personne pers) {
-		Utilisateur util = new Utilisateur(pers.getNom(), pers.getPrenom(), pers, this, this.maxEmprunt);
+		Utilisateur util = new Utilisateur(pers, this, this.maxEmprunt);
 		pers.getLstCarte().add(util);
 		lstUtil.add(util);
 		return util;
