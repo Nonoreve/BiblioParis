@@ -1,6 +1,8 @@
 package fr.nonoreve.biblioParis;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 
@@ -103,8 +105,8 @@ public class Bibliotheque {
 	 * @return
 	 */
 	public void NbDocTypeSerie(int debTemps, int finTemps) {
-		int cptAutres = 0, cptBandeDessinee = 0, cptCarte = 0, cptCD = 0, cptJeuDeSociete = 0, cptJeuVideo = 0,
-				cptLivre = 0, cptPartition = 0, cptRevue = 0, cptVinyle = 0;
+		int cptAutres = 0, cptBandeDessinee = 0, cptCarte = 0, cptCD = 0, cptDVD = 0, cptEnregistrementMusical = 0,
+				cptLivre = 0, cptPartition = 0, cptRevue = 0, cptMethode = 0;
 		for (Document d : hmDocu.keySet()) {
 			if (!(d.getDatePublication().equals("?"))){
 				int datePublicationInt = Integer.parseInt(d.getDatePublication().replaceAll("[^0-9]", ""));
@@ -123,14 +125,17 @@ public class Bibliotheque {
 						case "CD":
 							cptCD++;
 							break;
-						case "JeuDeSociete":
-							cptJeuDeSociete++;
+						case "DVD":
+							cptDVD++;
 							break;
-						case "JeuVideo":
-							cptJeuVideo++;
+						case "EnregistrementMusical":
+							cptEnregistrementMusical++;
 							break;
 						case "Livre":
 							cptLivre++;
+							break;
+						case "Methode":
+							cptMethode++;
 							break;
 						case "Partition":
 							cptPartition++;
@@ -138,9 +143,7 @@ public class Bibliotheque {
 						case "Revue":
 							cptRevue++;
 							break;
-						case "Vinyle":
-							cptVinyle++;
-							break;
+
 						default:
 							System.out.print("");
 					}
@@ -153,12 +156,13 @@ public class Bibliotheque {
 		System.out.println("BandeDessinee : " + cptBandeDessinee);
 		System.out.println("Carte : " + cptCarte);
 		System.out.println("CD : " + cptCD);
-		System.out.println("JeuDeSociete : " + cptJeuDeSociete);
-		System.out.println("JeuVideo : " + cptJeuVideo);
+		System.out.println("DVD : " + cptDVD);
+		System.out.println("EnregistrementMusical : " + cptEnregistrementMusical);
 		System.out.println("Livre : " + cptLivre);
+		System.out.println("Methode : " + cptMethode);
 		System.out.println("Partition : " + cptPartition);
 		System.out.println("Revue : " + cptRevue);
-		System.out.println("Vinyle : " + cptVinyle);
+
 	}
 
 	public String getNom() {
@@ -170,7 +174,7 @@ public class Bibliotheque {
 	}
 	
 	public Utilisateur inscrire(Personne pers) {
-		Utilisateur util = new Utilisateur(pers.getNom(), pers.getPrenom(), pers, this, this.maxEmprunt);
+		Utilisateur util = new Utilisateur(pers, this, this.maxEmprunt);
 		pers.getLstCarte().add(util);
 		lstUtil.add(util);
 		return util;
@@ -198,6 +202,20 @@ public class Bibliotheque {
 
 	public List<Utilisateur> getLstUtil() {
 		return lstUtil;
+	}
+	
+	public void listerDocumentsSerie(String serie){
+		List<Document> lstDocuTrie = new ArrayList<Document>();
+		for (Document d : hmDocu.keySet()){
+			if (d.getTitreSerie().equals(serie))
+				lstDocuTrie.add(d);
+		}
+		Collections.sort(lstDocuTrie, new Comparator<Document>() {
+			@Override
+			public int compare(Document o1, Document o2) {
+				return o1.getDatePublication().compareTo(o2.getDatePublication());
+			}
+		});
 	}
 	
 	
