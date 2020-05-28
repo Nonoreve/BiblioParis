@@ -247,43 +247,47 @@ public class Reseau {
 		int cptAutres = 0, cptBandeDessinee = 0, cptCarte = 0, cptCD = 0, cptJeuDeSociete = 0, cptJeuVideo = 0,
 				cptLivre = 0, cptPartition = 0, cptRevue = 0, cptVinyle = 0;
 		for (Document d : documents) {
-			if (d.getDatePublication() >= debTemps && d.getDatePublication() <= finTemps) {
-				String typeDocu = d.getClass().getSimpleName();
-				switch (typeDocu) {
-				case "Autres":
-					cptAutres++;
-					break;
-				case "BandeDessinee":
-					cptBandeDessinee++;
-					break;
-				case "Carte":
-					cptCarte++;
-					break;
-				case "CD":
-					cptCD++;
-					break;
-				case "JeuDeSociete":
-					cptJeuDeSociete++;
-					break;
-				case "JeuVideo":
-					cptJeuVideo++;
-					break;
-				case "Livre":
-					cptLivre++;
-					break;
-				case "Partition":
-					cptPartition++;
-					break;
-				case "Revue":
-					cptRevue++;
-					break;
-				case "Vinyle":
-					cptVinyle++;
-					break;
-				default:
-					System.out.print("");
+			if (!(d.getDatePublication().equals("?"))) {
+				int datePublicationInt = Integer.parseInt(d.getDatePublication().replaceAll("[^0-9]", ""));
+				if (datePublicationInt >= debTemps && datePublicationInt <= finTemps) {
+					String typeDocu = d.getClass().getSimpleName();
+					switch (typeDocu) {
+					case "Autres":
+						cptAutres++;
+						break;
+					case "BandeDessinee":
+						cptBandeDessinee++;
+						break;
+					case "Carte":
+						cptCarte++;
+						break;
+					case "CD":
+						cptCD++;
+						break;
+					case "JeuDeSociete":
+						cptJeuDeSociete++;
+						break;
+					case "JeuVideo":
+						cptJeuVideo++;
+						break;
+					case "Livre":
+						cptLivre++;
+						break;
+					case "Partition":
+						cptPartition++;
+						break;
+					case "Revue":
+						cptRevue++;
+						break;
+					case "Vinyle":
+						cptVinyle++;
+						break;
+					default:
+						System.out.print("");
+					}
 				}
 			}
+
 		}
 		System.out.println("Autres : " + cptAutres);
 		System.out.println("BandeDessinee : " + cptBandeDessinee);

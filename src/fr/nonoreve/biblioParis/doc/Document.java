@@ -5,7 +5,7 @@ public abstract class Document {
 	private String ean;
 	private String titre;
 	private String editeur;
-	private int datePublication;
+	private String datePublication;
 	private Integer ordreDansSerie;
 	private String prenomAuteur;
 	private String nomAuteur;
@@ -30,7 +30,7 @@ public abstract class Document {
 		this.nomAuteur = nomAuteur;
 		this.editeur = editeur;
 		System.out.println(datePublication);
-		this.datePublication = Integer.parseInt(datePublication.replaceAll("[^0-9]", ""));
+		this.datePublication = datePublication;
 		this.ordreDansSerie = ordreDansSerie;
 	}
 
@@ -72,7 +72,7 @@ public abstract class Document {
 	/**
 	 * @return the datePublication
 	 */
-	public int getDatePublication() {
+	public String getDatePublication() {
 		return datePublication;
 	}
 

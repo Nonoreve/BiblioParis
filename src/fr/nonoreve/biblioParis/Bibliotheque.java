@@ -104,43 +104,48 @@ public class Bibliotheque {
 		int cptAutres = 0, cptBandeDessinee = 0, cptCarte = 0, cptCD = 0, cptJeuDeSociete = 0, cptJeuVideo = 0,
 				cptLivre = 0, cptPartition = 0, cptRevue = 0, cptVinyle = 0;
 		for (Document d : hmDocu.keySet()) {
-			if (d.getDatePublication() >= debTemps && d.getDatePublication() <= finTemps) {
-				String typeDocu = d.getClass().getSimpleName();
-				switch (typeDocu) {
-				case "Autres":
-					cptAutres++;
-					break;
-				case "BandeDessinee":
-					cptBandeDessinee++;
-					break;
-				case "Carte":
-					cptCarte++;
-					break;
-				case "CD":
-					cptCD++;
-					break;
-				case "JeuDeSociete":
-					cptJeuDeSociete++;
-					break;
-				case "JeuVideo":
-					cptJeuVideo++;
-					break;
-				case "Livre":
-					cptLivre++;
-					break;
-				case "Partition":
-					cptPartition++;
-					break;
-				case "Revue":
-					cptRevue++;
-					break;
-				case "Vinyle":
-					cptVinyle++;
-					break;
-				default:
-					System.out.print("");
+			if (!(d.getDatePublication().equals("?"))){
+				int datePublicationInt = Integer.parseInt(d.getDatePublication().replaceAll("[^0-9]", ""));
+				if (datePublicationInt >= debTemps && datePublicationInt <= finTemps) {
+					String typeDocu = d.getClass().getSimpleName();
+					switch (typeDocu) {
+						case "Autres":
+							cptAutres++;
+							break;
+						case "BandeDessinee":
+							cptBandeDessinee++;
+							break;
+						case "Carte":
+							cptCarte++;
+							break;
+						case "CD":
+							cptCD++;
+							break;
+						case "JeuDeSociete":
+							cptJeuDeSociete++;
+							break;
+						case "JeuVideo":
+							cptJeuVideo++;
+							break;
+						case "Livre":
+							cptLivre++;
+							break;
+						case "Partition":
+							cptPartition++;
+							break;
+						case "Revue":
+							cptRevue++;
+							break;
+						case "Vinyle":
+							cptVinyle++;
+							break;
+						default:
+							System.out.print("");
+					}
 				}
 			}
+			
+			
 		}
 		System.out.println("Autres : " + cptAutres);
 		System.out.println("BandeDessinee : " + cptBandeDessinee);
@@ -161,5 +166,63 @@ public class Bibliotheque {
 	public String getAdresse() {
 		return adresse;
 	}
+	
+	public void inscrire(Utilisateur util) {
+		lstUtil.add(util);
+	}
+	
+	
+	public void emprunter(Document docu, Utilisateur util) {
+		if (lstUtil.contains(util)) {
+			if(hmDocu.containsKey(docu)) {
+				if(util.getLstDocEmprunte().size() < util.getMaxEmprunt()) {
+					util.getLstDocEmprunte().add(docu);
+					hmDocu.replace(docu , hmDocu.get(docu) -1 );
+					if (hmDocu.get(docu)==0) {
+						hmDocu.remove(docu);
+					}
+				}
+			}
+		}
+	}
+	
+	public void rendre(Document docu, Utilisateur util) {
+		if (lstUtil.contains(util)) {
+			if(util.getLstDocEmprunte().contains(docu)) {
+				util.getLstDocEmprunte().remove(docu);
+				if(hmDocu.containsKey(docu)) {
+					hmDocu.replace(docu, hmDocu.get(docu) +1);
+				}
+				else {
+					hmDocu.put(docu, 1);
+				}
+			}
+		}
+	}
+	
+	public void echanger(Document docu, Bibliotheque biblio) {
+		if (this.getHmDocu().containsKey(docu)) {
+			if (biblio.getHmDocu().containsKey(biblio)) {
+				biblio.getHmDocu().replace(docu, biblio.getHmDocu().get(docu) +1);	
+			}
+			else {
+				biblio.getHmDocu().put(docu, 1);
+			}
+			this.getHmDocu().replace(docu, this.getHmDocu().get(docu) -1);
+			if (this.getHmDocu().get(docu)==0) {
+				this.getHmDocu().remove(docu);
+			}
+		}
+	}
+
+	public HashMap<Document, Integer> getHmDocu() {
+		return hmDocu;
+	}
+
+	public List<Utilisateur> getLstUtil() {
+		return lstUtil;
+	}
+	
+	
 
 }
