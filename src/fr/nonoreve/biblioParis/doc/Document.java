@@ -23,17 +23,15 @@ public abstract class Document {
 	 * @param ordreDansSerie
 	 */
 	public Document(String ean, String titre, String editeur, String datePublication, String prenomAuteur,
-			String nomAuteur, Integer ordreDansSerie) throws NullPointerException {
-		if (ean != null) {
-			this.ean = ean;
-			this.titre = titre;
-			this.prenomAuteur = prenomAuteur;
-			this.nomAuteur = nomAuteur;
-			this.editeur = editeur;
-			this.datePublication = Integer.parseInt(datePublication.replaceAll("[^0-9]", ""));
-			this.ordreDansSerie = ordreDansSerie;
-		}
-		throw new NullPointerException("ean field can't be null");
+			String nomAuteur, Integer ordreDansSerie) {
+		this.ean = ean;
+		this.titre = titre;
+		this.prenomAuteur = prenomAuteur;
+		this.nomAuteur = nomAuteur;
+		this.editeur = editeur;
+		System.out.println(datePublication);
+		this.datePublication = Integer.parseInt(datePublication.replaceAll("[^0-9]", ""));
+		this.ordreDansSerie = ordreDansSerie;
 	}
 
 	/**
