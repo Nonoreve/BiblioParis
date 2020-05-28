@@ -4,7 +4,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-import java.util.function.Supplier;
 
 import fr.nonoreve.biblioParis.LecteurFichier.LigneFichier;
 import fr.nonoreve.biblioParis.doc.Autres;
@@ -24,6 +23,8 @@ public class Reseau {
 	private List<Bibliotheque> bibliotheques;
 	private List<Utilisateur> utilisateurs;
 	private List<Document> documents;
+	public static final String typesNames[] = { "livre", "bande dessinee", "partition", "carte", "disque compact",
+			"dvd", "methode", "enregistrement musical", "revue", "autres" };
 
 	/**
 	 * Construit le reseau a partir des donnes initiales
@@ -43,8 +44,6 @@ public class Reseau {
 
 		int pasEan = 0;
 		int pasType = 0;
-		String typesNames[] = { "livre", "bande dessinee", "partition", "carte", "disque compact", "dvd", "methode",
-				"enregistrement musical", "revue", "autres" };
 		int typesQuantities[] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
 		for (LigneFichier ligne : doneesBrutes) {
@@ -161,9 +160,10 @@ public class Reseau {
 
 		Reseau reseau = new Reseau(doneesBrutes);
 
-		final String[] commandes = { "stop", "help", "ajoute", "inscrire" };
+		final String[] commandes = { "stop", "help", "ajoute", "inscrire", "distribuer" };
 		final String[] desc = { "Arrete l'application.", "Affiche l'aide.",
-				"Ajoute un utilisateur, un document ou une bibliotheque. (ajoute <document|bibliotheque|personne> <arguments>)", "" };
+				"Ajoute un utilisateur, un document ou une bibliotheque. (ajoute <document|bibliotheque|personne> <arguments>)",
+				"Inscrit une personne dans une bibliotheque.", "Distribue un document a une bibliotheque." };
 		System.out.println("\n\nCommandes disponibles : ");
 		for (int i = 0; i < commandes.length; i++) {
 			System.out.print(commandes[i] + " ");
@@ -195,6 +195,7 @@ public class Reseau {
 			if (command.contentEquals(commandes[2])) { // AJOUTE
 				if (arguments == null || arguments.length <= 1) {
 					System.out.println("Mauvais nombre d'arguments. (Voir help)");
+					continue;
 				}
 				commandeAjoute(arguments, reseau);
 				continue;
@@ -212,7 +213,54 @@ public class Reseau {
 
 	private static void commandeAjoute(String[] arguments, Reseau reseau) {
 		if (arguments[0].contentEquals("document")) {
-			
+			if (arguments.length <= 2) {
+				System.out.println("Mauvais nombre d'arguments. (Voir help)");
+				return;
+			}
+			String type = arguments[1];
+			Document doc;
+			if (type.contains(typesNames[0])) { // 5860
+				
+				doc = new Livre(ligne.ean, ligne.titre, ligne.editeur, ligne.date, ligne.prenomAuteur,
+						ligne.nomAuteur, ligne.numeroSerie, ligne.titreSerie);
+			} else if (type.contains(typesNames[1]) || type.contains("bd")) { // 594
+				
+				doc = new BandeDessinee(ligne.ean, ligne.titre, ligne.editeur, ligne.date, ligne.prenomAuteur,
+						ligne.nomAuteur, ligne.numeroSerie, ligne.titreSerie);
+			} else if (type.contains(typesNames[2])) { // 236
+				
+				doc = new Partition(ligne.ean, ligne.titre, ligne.editeur, ligne.date, ligne.prenomAuteur,
+						ligne.nomAuteur, ligne.numeroSerie, ligne.titreSerie);
+			} else if (type.contains(typesNames[3])) { // 18
+				
+				doc = new Carte(ligne.ean, ligne.titre, ligne.editeur, ligne.date, ligne.prenomAuteur,
+						ligne.nomAuteur, ligne.numeroSerie, ligne.titreSerie);
+			} else if (type.contains(typesNames[4])) { // 2257
+				
+				doc = new CD(ligne.ean, ligne.titre, ligne.editeur, ligne.date, ligne.prenomAuteur, ligne.nomAuteur,
+						ligne.numeroSerie, ligne.titreSerie);
+			} else if (type.contains(typesNames[5])) { // 715
+				
+				doc = new DVD(ligne.ean, ligne.titre, ligne.editeur, ligne.date, ligne.prenomAuteur,
+						ligne.nomAuteur, ligne.numeroSerie, ligne.titreSerie);
+			} else if (type.contains(typesNames[6])) { // 156
+				
+				doc = new Methode(ligne.ean, ligne.titre, ligne.editeur, ligne.date, ligne.prenomAuteur,
+						ligne.nomAuteur, ligne.numeroSerie, ligne.titreSerie);
+			} else if (type.contains(typesNames[7])) { // 67
+				
+				doc = new EnregistrementMusical(ligne.ean, ligne.titre, ligne.editeur, ligne.date,
+						ligne.prenomAuteur, ligne.nomAuteur, ligne.numeroSerie, ligne.titreSerie);
+			} else if (type.contains(typesNames[8])) { // 17
+				
+				doc = new Revue(ligne.ean, ligne.titre, ligne.editeur, ligne.date, ligne.prenomAuteur,
+						ligne.nomAuteur, ligne.numeroSerie, ligne.titreSerie);
+			} else {
+				// System.out.println(ean + " avec type " + ligne.type + " place dans autres.");
+				
+				doc = new Autres(ligne.ean, ligne.titre, ligne.editeur, ligne.date, ligne.prenomAuteur,
+						ligne.nomAuteur, ligne.numeroSerie, ligne.titreSerie);
+			}
 			return;
 		}
 		if (arguments[0].contentEquals("bibliotheque")) {
@@ -220,7 +268,7 @@ public class Reseau {
 			return;
 		}
 		if (arguments[0].contentEquals("personne")) {
-			
+
 			return;
 		}
 	}
