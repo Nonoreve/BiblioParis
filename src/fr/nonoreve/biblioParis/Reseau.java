@@ -136,7 +136,8 @@ public class Reseau {
 		bibliotheques.add(jeanPierreMelville);
 		bibliotheques.add(oscarWilde);
 		bibliotheques.add(saintSimon);
-
+		bibliotheques
+				.forEach(b -> System.out.println(b.getNom() + " contient " + b.getHmDocu().size() + " documents."));
 	}
 
 	public static void main(String[] args) {

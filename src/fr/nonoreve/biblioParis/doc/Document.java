@@ -29,7 +29,6 @@ public abstract class Document {
 		this.prenomAuteur = prenomAuteur;
 		this.nomAuteur = nomAuteur;
 		this.editeur = editeur;
-		System.out.println(datePublication);
 		this.datePublication = datePublication;
 		this.ordreDansSerie = ordreDansSerie;
 	}

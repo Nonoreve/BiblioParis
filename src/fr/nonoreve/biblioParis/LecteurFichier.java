@@ -134,28 +134,28 @@ public class LecteurFichier {
 
 				// Get the number of copy in the library "Edmond Rostand"
 				try {
-					line.exemplairesEdmondRostand = Integer.parseInt(data[11]);
+					line.exemplairesEdmondRostand = Integer.parseInt(data[12]);
 				} catch (Exception exception) {
 					line.exemplairesEdmondRostand = 0;
 				}
 
 				// Get the number of copy in the library "Jean-Pierre Melville"
 				try {
-					line.exemplairesJeanPierreMelville = Integer.parseInt(data[11]);
+					line.exemplairesJeanPierreMelville = Integer.parseInt(data[13]);
 				} catch (Exception exception) {
 					line.exemplairesJeanPierreMelville = 0;
 				}
 
 				// Get the number of copy in the library "Oscar Wilde"
 				try {
-					line.exemplairesOscarWilde = Integer.parseInt(data[11]);
+					line.exemplairesOscarWilde = Integer.parseInt(data[14]);
 				} catch (Exception exception) {
 					line.exemplairesOscarWilde = 0;
 				}
 
 				// Get the number of copy in the library "Saint-Simon"
 				try {
-					line.exemplairesSaintSimon = Integer.parseInt(data[11]);
+					line.exemplairesSaintSimon = Integer.parseInt(data[15]);
 				} catch (Exception exception) {
 					line.exemplairesSaintSimon = 0;
 				}
