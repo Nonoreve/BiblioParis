@@ -92,7 +92,7 @@ public abstract class Document {
 	public String toString() {
 		String str = "EAN : " + ean + "\n" + titre + ", " + editeur + ", " + datePublication + "\nAuteur : " + prenomAuteur + " " + nomAuteur ;
 		if (titreSerie != null) {
-			str += "Serie : " + titreSerie + ", numéro : " + ordreDansSerie;
+			str += "\nSerie : " + titreSerie + ", numéro : " + ordreDansSerie;
 		}
 		return str;
 	}
