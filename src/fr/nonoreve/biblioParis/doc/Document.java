@@ -1,15 +1,15 @@
 package fr.nonoreve.biblioParis.doc;
 
-public class Document {
+public abstract class Document {
 
 	private String ean;
 	private String titre;
-	private String langue;
-	private String prenomAuteur;
-	private String nomAuteur;
 	private String editeur;
 	private String datePublication;
-	private String ordreDansSerie;
+	private String titreSerie;
+	private Integer ordreDansSerie;
+	private String prenomAuteur;
+	private String nomAuteur;
 
 	/**
 	 * Cree un nouveau document toutes les valeurs peuvent etre nulles sauf ean
@@ -23,12 +23,11 @@ public class Document {
 	 * @param datePublication
 	 * @param ordreDansSerie
 	 */
-	public Document(String ean, String titre, String langue, String prenomAuteur, String nomAuteur, String editeur,
-			String datePublication, String ordreDansSerie) throws NullPointerException {
+	public Document(String ean, String titre, String editeur, String datePublication, String prenomAuteur,
+			String nomAuteur, Integer ordreDansSerie) throws NullPointerException {
 		if (ean != null) {
 			this.ean = ean;
 			this.titre = titre;
-			this.langue = langue;
 			this.prenomAuteur = prenomAuteur;
 			this.nomAuteur = nomAuteur;
 			this.editeur = editeur;
@@ -50,13 +49,6 @@ public class Document {
 	 */
 	public String getTitre() {
 		return titre;
-	}
-
-	/**
-	 * @return the langue
-	 */
-	public String getLangue() {
-		return langue;
 	}
 
 	/**
@@ -88,9 +80,16 @@ public class Document {
 	}
 
 	/**
+	 * @return the titreSerie
+	 */
+	public String getTitreSerie() {
+		return titreSerie;
+	}
+
+	/**
 	 * @return the ordreDansSerie
 	 */
-	public String getOrdreDansSerie() {
+	public Integer getOrdreDansSerie() {
 		return ordreDansSerie;
 	}
 
