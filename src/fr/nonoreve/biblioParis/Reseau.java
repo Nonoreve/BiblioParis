@@ -34,11 +34,11 @@ public class Reseau {
 		this.utilisateurs = new ArrayList<Utilisateur>();
 		this.documents = new ArrayList<Document>();
 
-		Bibliotheque aimeCesaire = new Bibliotheque("Aime Cesaire", "");
-		Bibliotheque edmondRostand = new Bibliotheque("Edmond Rostand", "");
-		Bibliotheque jeanPierreMelville = new Bibliotheque("Jean Pierre Melville", "");
-		Bibliotheque oscarWilde = new Bibliotheque("Oscar Wilde", "");
-		Bibliotheque saintSimon = new Bibliotheque("Saint Simon", "");
+		Bibliotheque aimeCesaire = new Bibliotheque("Aime Cesaire", "",2);
+		Bibliotheque edmondRostand = new Bibliotheque("Edmond Rostand", "",3);
+		Bibliotheque jeanPierreMelville = new Bibliotheque("Jean Pierre Melville", "",3);
+		Bibliotheque oscarWilde = new Bibliotheque("Oscar Wilde", "",4);
+		Bibliotheque saintSimon = new Bibliotheque("Saint Simon", "",6);
 
 		int pasEan = 0;
 		int pasType = 0;
