@@ -87,4 +87,15 @@ public abstract class Document {
 	public String getTitreSerie() {
 		return titreSerie;
 	}
+
+	@Override
+	public String toString() {
+		String str = "EAN : " + ean + "\n" + titre + ", " + editeur + ", " + datePublication + "\nAuteur : " + prenomAuteur + " " + nomAuteur ;
+		if (titreSerie != null) {
+			str += "\nSerie : " + titreSerie + ", numéro : " + ordreDansSerie;
+		}
+		return str;
+	}
+	
+	
 }
