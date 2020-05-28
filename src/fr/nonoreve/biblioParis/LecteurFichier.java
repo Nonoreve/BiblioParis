@@ -23,8 +23,8 @@ public class LecteurFichier {
 		public String titre;
 		public String editeur;
 		public String date;
-		public String titreSerie;
 		public Integer numeroSerie;
+		public String titreSerie;
 		public String nomAuteur;
 		public String prenomAuteur;
 		public String type;

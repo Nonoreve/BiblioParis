@@ -1,6 +1,7 @@
 package fr.nonoreve.biblioParis;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -19,21 +20,126 @@ public class Reseau {
 	 * @param doneesBrutes
 	 */
 	public Reseau(List<LigneFichier> doneesBrutes) {
+		this.bibliotheques = new ArrayList<Bibliotheque>();
+		this.utilisateurs = new ArrayList<Utilisateur>();
+
 		Bibliotheque aimeCesaire = new Bibliotheque("Aime Cesaire", "");
 		Bibliotheque edmondRostand = new Bibliotheque("Edmond Rostand", "");
 		Bibliotheque jeanPierreMelville = new Bibliotheque("Jean Pierre Melville", "");
 		Bibliotheque oscarWilde = new Bibliotheque("Oscar Wilde", "");
 		Bibliotheque saintSimon = new Bibliotheque("Saint Simon", "");
 
-		for (LigneFichier ligne : doneesBrutes) {
+		int pasEan = 0;
+		int pasType = 0;
+		int typeInconnu = 0;
+		int types[] = { 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
+		for (LigneFichier ligne : doneesBrutes) {
+			if (ligne.ean != null && ligne.ean.length() > 0) {
+				if (ligne.type != null && ligne.type.length() > 0) {
+					String type = ligne.type.toLowerCase();
+					if (type.contains("livre")) { // 3366
+						types[0]++;
+						if (type.contains("jeunesse")) {
+							continue;
+						}
+						if (type.contains("adulte")) {
+							continue;
+						}
+						if (type.contains("fonds specialises")) {
+							continue;
+						}
+						if (type.contains("langue etrangere")) {
+							continue;
+						}
+						if (type.contains("gros caracteres")) {
+							continue;
+						}
+						continue;
+					}
+					if (type.contains("bande dessinee")) { // 442
+						types[1]++;
+						continue;
+					}
+					if (type.contains("partition")) { // 52
+						types[2]++;
+						continue;
+					}
+					if (type.contains("carte")) { // 12
+						types[3]++;
+						continue;
+					}
+					if (type.contains("disque compact")) { // 1054
+						types[4]++;
+						continue;
+					}
+					if (type.contains("dvd")) { // 614
+						types[5]++;
+						if (type.contains("jeunesse")) {
+							continue;
+						}
+						if (type.contains("dvd-video tous publics")) {
+							continue;
+						}
+						continue;
+					}
+					if (type.contains("methode")) { // 74
+						types[6]++;
+						if (type.contains("langue")) {
+							continue;
+						}
+						if (type.contains("musicale")) {
+							continue;
+						}
+						continue;
+					}
+					if (type.contains("enregistrement musical")) { // 49
+						types[7]++;
+						if (type.contains("jeunesse")) {
+							continue;
+						}
+						continue;
+					}
+					if (type.contains("usuels")) { // 14
+						types[8]++;
+						continue;
+					}
+					/*
+					 * if (type.contains("revue")) { types[3]++;// 2 continue; } if
+					 * (type.contains("vinyle")) { types[5]++;// 6 continue; } if
+					 * (type.contains("jeux de societe")) { types[6]++;// 1 continue; } if
+					 * (type.contains("jeux video")) { types[7]++;// 4 continue; } if
+					 * (type.contains("documents numeriques et multimedia jeunesse")) {
+					 * types[13]++;// 2 continue; } if (type.contains("nouveaute")) { types[14]++;//
+					 * 2 continue; }
+					 */
+					// System.out.println(ligne.ean + " avec type " + ligne.type + " place dans
+					// autres.");
+					typeInconnu++;
+				} else {
+					System.out.println("Pas de type pour " + ligne.ean + ".");
+					pasType++;
+				}
+			} else {
+				// System.out.println("Une ligne a ete ignoree par manque d'ean.");
+				pasEan++;
+			}
 		}
+		System.out.println("Documents sans ean : " + pasEan + ". Documents sans type : " + pasType
+				+ ". Documents type autres : " + typeInconnu);
+		
+		System.out.print("Quantite pour chaque types : ");
+		for (int i = 0; i < types.length; i++) {
+			System.out.print("" + types[i] + ' ');
+		}
+		System.out.println();
 
 		bibliotheques.add(aimeCesaire);
 		bibliotheques.add(edmondRostand);
 		bibliotheques.add(jeanPierreMelville);
 		bibliotheques.add(oscarWilde);
 		bibliotheques.add(saintSimon);
+
 	}
 
 	public static void main(String[] args) {

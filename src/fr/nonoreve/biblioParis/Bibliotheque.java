@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-
 import fr.nonoreve.biblioParis.doc.Document;
 
 public class Bibliotheque {
@@ -17,16 +16,15 @@ public class Bibliotheque {
 	public Bibliotheque(String nom, String adresse) {
 		this.nom = nom;
 		this.adresse = adresse;
-		this.hmDocu = new HashMap<Document,Integer>();
+		this.hmDocu = new HashMap<Document, Integer>();
 		this.lstUtil = new ArrayList<Utilisateur>();
 	}
 
-	public void ajouterDocument(Document document,int nb) {
+	public void ajouterDocument(Document document, int nb) {
 		if (hmDocu.containsKey(document)) {
 			nb += hmDocu.get(document);
 			this.hmDocu.put(document, nb);
-		}
-		else {
+		} else {
 			this.hmDocu.put(document, nb);
 		}
 	}
@@ -34,8 +32,8 @@ public class Bibliotheque {
 	/**
 	 * Liste les documents present dans la bibliotheque
 	 */
-	public void listerDocuments(){
-		for (Document d : hmDocu.keySet()){
+	public void listerDocuments() {
+		for (Document d : hmDocu.keySet()) {
 			System.out.println(d.toString());
 		}
 	}
@@ -46,9 +44,9 @@ public class Bibliotheque {
 	 * 
 	 * @param nom
 	 */
-	public void listerDocumentsNomAuteur(String nomAuteur){
-		
-		for (Document d : hmDocu.keySet()){
+	public void listerDocumentsNomAuteur(String nomAuteur) {
+
+		for (Document d : hmDocu.keySet()) {
 			if (d.getNomAuteur().equals(nomAuteur))
 				System.out.println(d.toString());
 		}
@@ -60,8 +58,8 @@ public class Bibliotheque {
 	 * 
 	 * @param prenom
 	 */
-	public void listerDocumentsPrenomAuteur(String prenomAuteur){
-		for (Document d : hmDocu.keySet()){
+	public void listerDocumentsPrenomAuteur(String prenomAuteur) {
+		for (Document d : hmDocu.keySet()) {
 			if (d.getPrenomAuteur().equals(prenomAuteur))
 				System.out.println(d.toString());
 		}
@@ -74,9 +72,9 @@ public class Bibliotheque {
 	 * @param nom
 	 * @param prenom
 	 */
-	public void listerDocumentsNomPrenomAuteur(String nomAuteur, String prenomAuteur){
-		for (Document d : hmDocu.keySet()){
-			if (d.getNomAuteur().equals(nomAuteur)  && d.getPrenomAuteur().equals(prenomAuteur))
+	public void listerDocumentsNomPrenomAuteur(String nomAuteur, String prenomAuteur) {
+		for (Document d : hmDocu.keySet()) {
+			if (d.getNomAuteur().equals(nomAuteur) && d.getPrenomAuteur().equals(prenomAuteur))
 				System.out.println(d.toString());
 		}
 	}
@@ -87,8 +85,8 @@ public class Bibliotheque {
 	 * 
 	 * @param EAN
 	 */
-	public void listerDocumentsEan(String ean){
-		for (Document d : hmDocu.keySet()){
+	public void listerDocumentsEan(String ean) {
+		for (Document d : hmDocu.keySet()) {
 			if (d.getEan().equals(ean))
 				System.out.println(d.toString());
 		}
@@ -102,44 +100,45 @@ public class Bibliotheque {
 	 * @param finTemps
 	 * @return
 	 */
-	public void NbDocTypeSerie(int debTemps, int finTemps){
-		int cptAutres = 0, cptBandeDessinee = 0, cptCarte = 0, cptCD = 0, cptJeuDeSociete = 0, cptJeuVideo = 0, cptLivre = 0, cptPartition = 0, cptRevue = 0, cptVinyle = 0;
-		for (Document d : hmDocu.keySet()){
-			if (d.getDatePublication()>= debTemps && d.getDatePublication()<= finTemps) {
+	public void NbDocTypeSerie(int debTemps, int finTemps) {
+		int cptAutres = 0, cptBandeDessinee = 0, cptCarte = 0, cptCD = 0, cptJeuDeSociete = 0, cptJeuVideo = 0,
+				cptLivre = 0, cptPartition = 0, cptRevue = 0, cptVinyle = 0;
+		for (Document d : hmDocu.keySet()) {
+			if (d.getDatePublication() >= debTemps && d.getDatePublication() <= finTemps) {
 				String typeDocu = d.getClass().getSimpleName();
-				switch(typeDocu) {
-				  case "Autres":
-					  cptAutres++;
-				    break;
-				  case "BandeDessinee":
-					  cptBandeDessinee++;
-				    break;
-				  case "Carte":
-					  cptCarte++;
-				    break;
-				  case "CD":
-					  cptCD++;
-				    break;
-				  case "JeuDeSociete":
-					  cptJeuDeSociete++;
-				    break;
-				  case "JeuVideo":
-					  cptJeuVideo++;
-				    break;
-				  case "Livre":
-					  cptLivre++;
-				    break;
-				  case "Partition":
-					  cptPartition++;
-				    break;
-				  case "Revue":
-					  cptRevue++;
-				    break;
-				  case "Vinyle":
-					  cptVinyle++;
-				    break;
-				  default:
-					  System.out.print("");
+				switch (typeDocu) {
+				case "Autres":
+					cptAutres++;
+					break;
+				case "BandeDessinee":
+					cptBandeDessinee++;
+					break;
+				case "Carte":
+					cptCarte++;
+					break;
+				case "CD":
+					cptCD++;
+					break;
+				case "JeuDeSociete":
+					cptJeuDeSociete++;
+					break;
+				case "JeuVideo":
+					cptJeuVideo++;
+					break;
+				case "Livre":
+					cptLivre++;
+					break;
+				case "Partition":
+					cptPartition++;
+					break;
+				case "Revue":
+					cptRevue++;
+					break;
+				case "Vinyle":
+					cptVinyle++;
+					break;
+				default:
+					System.out.print("");
 				}
 			}
 		}
