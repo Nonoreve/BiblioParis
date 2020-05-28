@@ -10,12 +10,14 @@ public class Bibliotheque {
 
 	private String nom;
 	private String adresse;
+	private int maxEmprunt;
 	private HashMap<Document, Integer> hmDocu;
 	private List<Utilisateur> lstUtil;
 
-	public Bibliotheque(String nom, String adresse) {
+	public Bibliotheque(String nom, String adresse, int maxEmprunt) {
 		this.nom = nom;
 		this.adresse = adresse;
+		this.maxEmprunt = maxEmprunt;
 		this.hmDocu = new HashMap<Document, Integer>();
 		this.lstUtil = new ArrayList<Utilisateur>();
 	}
@@ -167,39 +169,14 @@ public class Bibliotheque {
 		return adresse;
 	}
 	
-	public void inscrire(Utilisateur util) {
+	public Utilisateur inscrire(Personne pers) {
+		Utilisateur util = new Utilisateur(pers.getNom(), pers.getPrenom(), pers, this, this.maxEmprunt);
+		pers.getLstCarte().add(util);
 		lstUtil.add(util);
+		return util;
 	}
 	
-	
-	public void emprunter(Document docu, Utilisateur util) {
-		if (lstUtil.contains(util)) {
-			if(hmDocu.containsKey(docu)) {
-				if(util.getLstDocEmprunte().size() < util.getMaxEmprunt()) {
-					util.getLstDocEmprunte().add(docu);
-					hmDocu.replace(docu , hmDocu.get(docu) -1 );
-					if (hmDocu.get(docu)==0) {
-						hmDocu.remove(docu);
-					}
-				}
-			}
-		}
-	}
-	
-	public void rendre(Document docu, Utilisateur util) {
-		if (lstUtil.contains(util)) {
-			if(util.getLstDocEmprunte().contains(docu)) {
-				util.getLstDocEmprunte().remove(docu);
-				if(hmDocu.containsKey(docu)) {
-					hmDocu.replace(docu, hmDocu.get(docu) +1);
-				}
-				else {
-					hmDocu.put(docu, 1);
-				}
-			}
-		}
-	}
-	
+		
 	public void echanger(Document docu, Bibliotheque biblio) {
 		if (this.getHmDocu().containsKey(docu)) {
 			if (biblio.getHmDocu().containsKey(biblio)) {
