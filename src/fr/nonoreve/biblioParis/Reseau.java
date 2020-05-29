@@ -2,6 +2,7 @@ package fr.nonoreve.biblioParis;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
@@ -171,10 +172,11 @@ public class Reseau {
 		System.out.println();
 
 		if (!stop) {
-			final String[] commandes = { "stop", "help", "ajoute", "inscrire", "distribuer" };
+			final String[] commandes = { "stop", "help", "ajouter", "inscrire", "distribuer" };
 			final String[] desc = { "Arrete l'application.", "Affiche l'aide.",
-					"Ajoute un utilisateur, un document ou une bibliotheque. (ajoute <document|bibliotheque|personne> <arguments>)",
-					"Inscrit une personne dans une bibliotheque.", "Distribue un document a une bibliotheque." };
+					"Ajoute un personne, un document ou une bibliotheque. (ajouter <document|bibliotheque|personne> <arguments>)",
+					"Inscrit une personne dans une bibliotheque.",
+					"Distribue un document a une bibliotheque. (distribuer <nomBilbiotheque> <eanDocument> <exemplaires>)" };
 			System.out.println("\n\nCommandes disponibles : ");
 			for (int i = 0; i < commandes.length; i++) {
 				System.out.print(commandes[i] + " ");
@@ -211,6 +213,37 @@ public class Reseau {
 					continue;
 				}
 
+				if (command.contentEquals(commandes[3])) { // DISTRTIBUER
+					if (arguments == null || arguments.length != 3) {
+						System.out.println("Mauvais nombre d'arguments. (Voir help)");
+						continue;
+					}
+
+					Integer exemplaires;
+					try {
+						exemplaires = Integer.parseInt(arguments[2]);
+					} catch (Exception exception) {
+						System.out.println("Le parametre exemplaires doit etre un nombre.");
+						continue;
+					}
+					if(exemplaires < 1) {
+						System.out.println("Le minimum d'exemplaires est 1");
+						continue;
+					}
+					Bibliotheque biblio = rechercherBibliotheque();
+					List<Document> recherche = reseau.rechercherDocumentsEan(arguments[1]);
+					if (recherche.size() > 1) {
+						System.out.println("Erreur plusieurs documents trouves avec ean " + arguments[1]);
+						return;
+					}
+					if (recherche.size() == 0) {
+						System.out.println("Le document n'existe pas.");
+						continue;
+					}
+					biblio.ajouterDocument(recherche.get(0), exemplaires);
+					continue;
+				}
+
 				if (command.contentEquals("egg")) {
 					System.out.println("Nobody expects the spanish inquisition.");
 					continue;
@@ -220,12 +253,17 @@ public class Reseau {
 		}
 
 		// TODO faire tous les test necessaires
-		reseau.listerDocumentsEan("9782754000727");
 
 		sc.close();
 	}
 
+	private static Bibliotheque rechercherBibliotheque() {
+
+		return null;
+	}
+
 	private static void commandeAjoute(String[] arguments, Reseau reseau) {
+
 		if (arguments[0].contentEquals("document")) {
 			if (arguments.length < 10) {
 				// les arg sont tous obligatoires sauf l'isbn sinon c beaucoup plus complique a
@@ -326,8 +364,8 @@ public class Reseau {
 	/**
 	 * Liste les documents present dans le reseau
 	 */
-	public void listerDocuments() {
-		documents.forEach((s, d) -> System.out.println(d.toString()));
+	public List<Document> rechercherDocuments() {
+		return Arrays.asList(documents.entrySet().toArray(new Document[documents.size()]));
 	}
 
 	/**
@@ -336,11 +374,13 @@ public class Reseau {
 	 * 
 	 * @param nom
 	 */
-	public void listerDocumentsNomAuteur(String nomAuteur) {
+	public List<Document> rechercherDocumentsNomAuteur(String nomAuteur) {
+		List<Document> result = new ArrayList<Document>();
 		documents.forEach((s, d) -> {
 			if (d.getNomAuteur().equals(nomAuteur))
-				System.out.println(d.toString());
+				result.add(d);
 		});
+		return result;
 	}
 
 	/**
@@ -349,11 +389,13 @@ public class Reseau {
 	 * 
 	 * @param prenom
 	 */
-	public void listerDocumentsPrenomAuteur(String prenomAuteur) {
+	public List<Document> rechercherDocumentsPrenomAuteur(String prenomAuteur) {
+		List<Document> result = new ArrayList<Document>();
 		documents.forEach((s, d) -> {
 			if (d.getPrenomAuteur().equals(prenomAuteur))
-				System.out.println(d.toString());
+				result.add(d);
 		});
+		return result;
 	}
 
 	/**
@@ -363,11 +405,13 @@ public class Reseau {
 	 * @param nom
 	 * @param prenom
 	 */
-	public void listerDocumentsNomPrenomAuteur(String nomAuteur, String prenomAuteur) {
+	public List<Document> rechercherDocumentsNomPrenomAuteur(String nomAuteur, String prenomAuteur) {
+		List<Document> result = new ArrayList<Document>();
 		documents.forEach((s, d) -> {
 			if (d.getNomAuteur().equals(nomAuteur) && d.getPrenomAuteur().equals(prenomAuteur))
-				System.out.println(d.toString());
+				result.add(d);
 		});
+		return result;
 	}
 
 	/**
@@ -376,21 +420,25 @@ public class Reseau {
 	 * 
 	 * @param EAN
 	 */
-	public void listerDocumentsEan(String ean) {
+	public List<Document> rechercherDocumentsEan(String ean) {
+		List<Document> result = new ArrayList<Document>();
 		documents.forEach((s, d) -> {
 			if (d.getEan().equals(ean))
-				System.out.println(d.toString());
+				result.add(d);
 		});
+		return result;
 	}
 
-	public void listerDocumentsIsbn(String isbn) {
+	public List<Document> rechercherDocumentsIsbn(String isbn) {
+		List<Document> result = new ArrayList<Document>();
 		documents.forEach((s, d) -> {
 			if (d instanceof ISBNable) {
 				ISBNable i = (ISBNable) d;
 				if (i.getISBN().contentEquals(isbn))
-					System.out.println(d.toString());
+					result.add(d);
 			}
 		});
+		return result;
 	}
 
 	/**

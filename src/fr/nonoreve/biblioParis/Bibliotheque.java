@@ -37,10 +37,12 @@ public class Bibliotheque {
 	/**
 	 * Liste les documents present dans la bibliotheque
 	 */
-	public void listerDocuments() {
+	public List<Document> rechercherDocuments() {
+		List<Document> result = new ArrayList<Document>();
 		for (Document d : hmDocu.keySet()) {
-			System.out.println(d.toString());
+			result.add(d);
 		}
+		return result;
 	}
 
 	/**
@@ -49,12 +51,13 @@ public class Bibliotheque {
 	 * 
 	 * @param nom
 	 */
-	public void listerDocumentsNomAuteur(String nomAuteur) {
-
+	public List<Document> rechercherDocumentsNomAuteur(String nomAuteur) {
+		List<Document> result = new ArrayList<Document>();
 		for (Document d : hmDocu.keySet()) {
 			if (d.getNomAuteur().equals(nomAuteur))
-				System.out.println(d.toString());
+				result.add(d);
 		}
+		return result;
 	}
 
 	/**
@@ -63,11 +66,13 @@ public class Bibliotheque {
 	 * 
 	 * @param prenom
 	 */
-	public void listerDocumentsPrenomAuteur(String prenomAuteur) {
+	public List<Document> rechercherDocumentsPrenomAuteur(String prenomAuteur) {
+		List<Document> result = new ArrayList<Document>();
 		for (Document d : hmDocu.keySet()) {
 			if (d.getPrenomAuteur().equals(prenomAuteur))
-				System.out.println(d.toString());
+				result.add(d);
 		}
+		return result;
 	}
 
 	/**
@@ -77,11 +82,13 @@ public class Bibliotheque {
 	 * @param nom
 	 * @param prenom
 	 */
-	public void listerDocumentsNomPrenomAuteur(String nomAuteur, String prenomAuteur) {
+	public List<Document> rechercherDocumentsNomPrenomAuteur(String nomAuteur, String prenomAuteur) {
+		List<Document> result = new ArrayList<Document>();
 		for (Document d : hmDocu.keySet()) {
 			if (d.getNomAuteur().equals(nomAuteur) && d.getPrenomAuteur().equals(prenomAuteur))
-				System.out.println(d.toString());
+				result.add(d);
 		}
+		return result;
 	}
 
 	/**
@@ -90,21 +97,25 @@ public class Bibliotheque {
 	 * 
 	 * @param EAN
 	 */
-	public void listerDocumentsEan(String ean) {
+	public List<Document> rechercherDocumentsEan(String ean) {
+		List<Document> result = new ArrayList<Document>();
 		for (Document d : hmDocu.keySet()) {
 			if (d.getEan().equals(ean))
-				System.out.println(d.toString());
+				result.add(d);
 		}
+		return result;
 	}
 
-	public void listerDocumentsIsbn(String isbn) {
+	public List<Document> rechercherDocumentsIsbn(String isbn) {
+		List<Document> result = new ArrayList<Document>();
 		for (Document d : hmDocu.keySet()) {
 			if (d instanceof ISBNable) {
 				ISBNable i = (ISBNable) d;
 				if (i.getISBN().contentEquals(isbn))
-					System.out.println(d.toString());
+					result.add(d);
 			}
 		}
+		return result;
 	}
 
 	/**
@@ -192,7 +203,7 @@ public class Bibliotheque {
 
 	public void echanger(Document docu, Bibliotheque biblio) {
 		if (this.getHmDocu().containsKey(docu)) {
-			if (biblio.getHmDocu().containsKey(biblio)) {
+			if (biblio.getHmDocu().containsKey(docu)) {
 				biblio.getHmDocu().replace(docu, biblio.getHmDocu().get(docu) + 1);
 			} else {
 				biblio.getHmDocu().put(docu, 1);
@@ -212,7 +223,7 @@ public class Bibliotheque {
 		return lstUtil;
 	}
 
-	public void listerDocumentsSerie(String serie) {
+	public List<Document> rechercherDocumentsSerie(String serie) {
 		List<Document> lstDocuTrie = new ArrayList<Document>();
 		for (Document d : hmDocu.keySet()) {
 			if (d.getTitreSerie().equals(serie))
@@ -224,6 +235,7 @@ public class Bibliotheque {
 				return o1.getDatePublication().compareTo(o2.getDatePublication());
 			}
 		});
+		return lstDocuTrie;
 	}
 
 }
