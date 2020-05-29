@@ -3,6 +3,8 @@ package fr.nonoreve.biblioParis;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
@@ -24,7 +26,7 @@ import fr.nonoreve.biblioParis.doc.Revue;
 public class Reseau {
 
 	private List<Bibliotheque> bibliotheques;
-	private List<Utilisateur> utilisateurs;
+	private List<Personne> personnes;
 	private HashMap<String, Document> documents;
 	public static final String typesNames[] = { "livre", "bande dessinee", "partition", "carte", "disque compact",
 			"dvd", "methode", "enregistrement musical", "revue", "autres" };
@@ -36,7 +38,7 @@ public class Reseau {
 	 */
 	public Reseau(List<LigneFichier> doneesBrutes) {
 		this.bibliotheques = new ArrayList<Bibliotheque>();
-		this.utilisateurs = new ArrayList<Utilisateur>();
+		this.personnes = new ArrayList<Personne>();
 		this.documents = new HashMap<>();
 
 		Bibliotheque aimeCesaire = new Bibliotheque("Aime Cesaire", "", 2);
@@ -226,7 +228,7 @@ public class Reseau {
 						System.out.println("Le parametre exemplaires doit etre un nombre.");
 						continue;
 					}
-					if(exemplaires < 1) {
+					if (exemplaires < 1) {
 						System.out.println("Le minimum d'exemplaires est 1");
 						continue;
 					}
@@ -429,6 +431,12 @@ public class Reseau {
 		return result;
 	}
 
+	/**
+	 * Liste les documents present dans le reseau avec l'ISBN du document comme
+	 * filtre
+	 * 
+	 * @param ISBN
+	 */
 	public List<Document> rechercherDocumentsIsbn(String isbn) {
 		List<Document> result = new ArrayList<Document>();
 		documents.forEach((s, d) -> {
@@ -450,8 +458,8 @@ public class Reseau {
 	 * @return
 	 */
 	public void NbDocTypeSerie(int debTemps, int finTemps) {
-		int cptAutres = 0, cptBandeDessinee = 0, cptCarte = 0, cptCD = 0, cptJeuDeSociete = 0, cptJeuVideo = 0,
-				cptLivre = 0, cptPartition = 0, cptRevue = 0, cptVinyle = 0;
+		int cptAutres = 0, cptBandeDessinee = 0, cptCarte = 0, cptCD = 0, cptDVD = 0, cptEnregistrementMusical = 0,
+				cptLivre = 0, cptPartition = 0, cptRevue = 0, cptMethode = 0;
 		for (String ean : documents.keySet()) {
 			Document d = documents.get(ean);
 			if (!(d.getDatePublication().equals("?"))) {
@@ -471,14 +479,17 @@ public class Reseau {
 					case "CD":
 						cptCD++;
 						break;
-					case "JeuDeSociete":
-						cptJeuDeSociete++;
+					case "DVD":
+						cptDVD++;
 						break;
-					case "JeuVideo":
-						cptJeuVideo++;
+					case "EnregistrementMusical":
+						cptEnregistrementMusical++;
 						break;
 					case "Livre":
 						cptLivre++;
+						break;
+					case "Methode":
+						cptMethode++;
 						break;
 					case "Partition":
 						cptPartition++;
@@ -486,9 +497,7 @@ public class Reseau {
 					case "Revue":
 						cptRevue++;
 						break;
-					case "Vinyle":
-						cptVinyle++;
-						break;
+
 					default:
 						System.out.print("");
 					}
@@ -500,12 +509,33 @@ public class Reseau {
 		System.out.println("BandeDessinee : " + cptBandeDessinee);
 		System.out.println("Carte : " + cptCarte);
 		System.out.println("CD : " + cptCD);
-		System.out.println("JeuDeSociete : " + cptJeuDeSociete);
-		System.out.println("JeuVideo : " + cptJeuVideo);
+		System.out.println("DVD : " + cptDVD);
+		System.out.println("EnregistrementMusical : " + cptEnregistrementMusical);
 		System.out.println("Livre : " + cptLivre);
+		System.out.println("Methode : " + cptMethode);
 		System.out.println("Partition : " + cptPartition);
 		System.out.println("Revue : " + cptRevue);
-		System.out.println("Vinyle : " + cptVinyle);
+
+	}
+
+	/**
+	 * Liste les documents du reseau d'une serie en parametre
+	 * 
+	 * @param serie
+	 */
+	public void listerDocumentsSerie(String serie) {
+		List<Document> lstDocuTrie = new ArrayList<Document>();
+		for (String ean : documents.keySet()) {
+			Document d = documents.get(ean);
+			if (d.getTitreSerie().equals(serie))
+				lstDocuTrie.add(d);
+		}
+		Collections.sort(lstDocuTrie, new Comparator<Document>() {
+			@Override
+			public int compare(Document o1, Document o2) {
+				return o1.getDatePublication().compareTo(o2.getDatePublication());
+			}
+		});
 	}
 
 }

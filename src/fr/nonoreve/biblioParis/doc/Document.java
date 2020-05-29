@@ -90,12 +90,12 @@ public abstract class Document {
 
 	@Override
 	public String toString() {
-		String str = "EAN : " + ean + "\n" + titre + ", " + editeur + ", " + datePublication + "\nAuteur : " + prenomAuteur + " " + nomAuteur ;
+		String str = "EAN : " + ean + "\n" + titre + ", " + editeur + ", " + datePublication + "\nAuteur : "
+				+ prenomAuteur + " " + nomAuteur;
 		if (titreSerie != null) {
 			str += "\nSerie : " + titreSerie + ", numero : " + ordreDansSerie;
 		}
 		return str;
 	}
-	
-	
+
 }
