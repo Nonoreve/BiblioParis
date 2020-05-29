@@ -25,6 +25,11 @@ public class Bibliotheque {
 		this.lstUtil = new ArrayList<Utilisateur>();
 	}
 
+	/**
+	 * ajoute un document a la bibliothequqe
+	 * @param document
+	 * @param nb
+	 */
 	public void ajouterDocument(Document document, int nb) {
 		if (hmDocu.containsKey(document)) {
 			nb += hmDocu.get(document);
@@ -47,7 +52,7 @@ public class Bibliotheque {
 	 * Liste les documents present dans la bibliotheque avec le nom de l'auteur
 	 * comme filtre
 	 * 
-	 * @param nom
+	 * @param nomAuteur
 	 */
 	public void listerDocumentsNomAuteur(String nomAuteur) {
 
@@ -61,7 +66,7 @@ public class Bibliotheque {
 	 * Liste les documents present dans la bibliotheque avec le prenom de l'auteur
 	 * comme filtre
 	 * 
-	 * @param prenom
+	 * @param prenomAuteur
 	 */
 	public void listerDocumentsPrenomAuteur(String prenomAuteur) {
 		for (Document d : hmDocu.keySet()) {
@@ -74,8 +79,8 @@ public class Bibliotheque {
 	 * Liste les documents present dans la bibliotheque avec le nom et prenom de
 	 * l'auteur comme filtre
 	 * 
-	 * @param nom
-	 * @param prenom
+	 * @param nomAuteur
+	 * @param prenomAuteur
 	 */
 	public void listerDocumentsNomPrenomAuteur(String nomAuteur, String prenomAuteur) {
 		for (Document d : hmDocu.keySet()) {
@@ -96,7 +101,14 @@ public class Bibliotheque {
 				System.out.println(d.toString());
 		}
 	}
-
+	
+	
+	/**
+	 * Liste les documents present dans la bibliotheque avec l'ISBN du document comme
+	 * filtre
+	 * 
+	 * @param ISBN
+	 */
 	public void listerDocumentsIsbn(String isbn) {
 		for (Document d : hmDocu.keySet()) {
 			if (d instanceof ISBNable) {
@@ -183,6 +195,11 @@ public class Bibliotheque {
 		return adresse;
 	}
 
+	/**
+	 * inscrit une personne en tant qu'utlisateur a la bibliotheque
+	 * @param pers
+	 * @return
+	 */
 	public Utilisateur inscrire(Personne pers) {
 		Utilisateur util = new Utilisateur(pers, this, this.maxEmprunt);
 		pers.getLstCarte().add(util);
@@ -190,6 +207,11 @@ public class Bibliotheque {
 		return util;
 	}
 
+	/**
+	 * permet de donner un livre a une autre bibliotheque
+	 * @param docu
+	 * @param biblio
+	 */
 	public void echanger(Document docu, Bibliotheque biblio) {
 		if (this.getHmDocu().containsKey(docu)) {
 			if (biblio.getHmDocu().containsKey(biblio)) {
@@ -212,6 +234,10 @@ public class Bibliotheque {
 		return lstUtil;
 	}
 
+	/**
+	 * Liste les documents d'une bibliotheque d'une serie en parametre
+	 * @param serie
+	 */
 	public void listerDocumentsSerie(String serie) {
 		List<Document> lstDocuTrie = new ArrayList<Document>();
 		for (Document d : hmDocu.keySet()) {

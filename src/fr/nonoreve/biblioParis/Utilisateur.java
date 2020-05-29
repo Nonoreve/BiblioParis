@@ -40,6 +40,11 @@ public class Utilisateur {
 		return lstDocEmprunte;
 	}
 	
+	/**
+	 * permet a l'utilisateur s'emprunter un livre dans la bibliotheque ou il est inscrit
+	 * @param docu
+	 * @param biblio
+	 */
 	public void emprunter(Document docu, Bibliotheque biblio) {
 		if(biblio.getLstUtil().contains(this)) {
 			if(biblio.getHmDocu().containsKey(docu)) {
@@ -54,6 +59,11 @@ public class Utilisateur {
 		}
 	}
 	
+	/**
+	 * permet a l'utilisateur de rendre un livre dans une bibliotheque ou il est inscrit
+	 * @param docu
+	 * @param biblio
+	 */
 	public void rendre (Document docu, Bibliotheque biblio) {
 		if (this.getLstDocEmprunte().contains(docu)) {
 			if (this.getBiblio().equals(biblio)) {
