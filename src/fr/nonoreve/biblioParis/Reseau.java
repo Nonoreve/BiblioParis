@@ -177,8 +177,8 @@ public class Reseau {
 			final String[] commandes = { "stop", "help", "ajouter", "inscrire", "distribuer", "consulter" };
 			final String[] desc = { "Arrete l'application.", "Affiche l'aide.",
 					"Ajoute un personne, un document ou une bibliotheque. (ajouter <document|bibliotheque|personne> <arguments> [arguments] ... [arguments])",
-					"Inscrit une personne dans une bibliotheque. (inscrire <nomUtilisateur> <prenomUtilisateur> <nomBibliotheque>)",
-					"Distribue un document a une bibliotheque. (distribuer <nomBilbiotheque> <eanDocument> <exemplaires>)",
+					"Inscrit une personne dans une bibliotheque. (inscrire <nomUtilisateur> <prenomUtilisateur> <nomBibliotheque> [nomBiliotheque] ... [nomBiliotheque]",
+					"Distribue un document a une bibliotheque. (distribuer <eanDocument> <exemplaires> <nomBilbiotheque> [nomBiliotheque] ... [nomBiliotheque])",
 					"Affiche le resultat d'une recherche. (non implemente)" };
 			System.out.println("\n\nCommandes disponibles : ");
 			for (int i = 0; i < commandes.length; i++) {
@@ -240,9 +240,13 @@ public class Reseau {
 					} else {
 						elut = recherchePersonnes.get(0);
 					}
-
-					Bibliotheque biblio = rechercherBibliotheque(arguments[2], reseau);
-					biblio.inscrire(elut);
+					String nomBiblio = arguments[2];
+					for(int i = 3; i < arguments.length; i++) {
+						nomBiblio += ' ' + arguments[i];
+					}
+					Bibliotheque biblio = rechercherBibliotheque(nomBiblio, reseau);
+					if(biblio != null)
+						biblio.inscrire(elut);
 					continue;
 				}
 
@@ -254,7 +258,7 @@ public class Reseau {
 
 					Integer exemplaires;
 					try {
-						exemplaires = Integer.parseInt(arguments[2]);
+						exemplaires = Integer.parseInt(arguments[1]);
 					} catch (Exception exception) {
 						System.out.println("Le parametre exemplaires doit etre un nombre.");
 						continue;
@@ -263,7 +267,13 @@ public class Reseau {
 						System.out.println("Le minimum d'exemplaires est 1");
 						continue;
 					}
-					Bibliotheque biblio = rechercherBibliotheque(arguments[0], reseau);
+					String nomBiblio = arguments[2];
+					for(int i = 3; i < arguments.length; i++) {
+						nomBiblio += ' ' + arguments[i];
+					}
+					Bibliotheque biblio = rechercherBibliotheque(nomBiblio, reseau);
+					if(biblio == null)
+						continue;
 					List<Document> recherche = reseau.rechercherDocumentsEan(arguments[1]);
 					if (recherche.size() > 1) {
 						System.out.println("Erreur plusieurs documents trouves avec ean " + arguments[1]);
@@ -284,8 +294,6 @@ public class Reseau {
 
 			}
 		}
-
-		// TODO faire tous les test necessaires
 		
 		//Test consultation reseau
 		
@@ -340,50 +348,6 @@ public class Reseau {
 		
 		//Test de consultation des documents de la biblio par type dans un intervalle de temps
 		//reseau.bibliotheques.get(0).nbDocTypeTemps(2005, 2015);
-		
-		/*
-		//test d'inscription, emprunt, rendu
-		Personne p = new Personne("Jean","Dupond");
-		Utilisateur u0 = reseau.bibliotheques.get(0).inscrire(p);
-		Document doc = null;
-		System.out.println("Etat  biblio 0 avant emprunt pour le livre d'ean 9782809457025");
-		//On cherche le document pour l'ean et on le garde dans une nouvelle variable pour simplifie les etapes suivantes
-		for (Document d : reseau.bibliotheques.get(0).rechercherDocumentsEan("9782809457025")) {
-			System.out.println(d);
-			doc = d;
-		}
-		u0.emprunter(doc, reseau.bibliotheques.get(0));
-		System.out.println("Etat  biblio 0 apres emprunt pour le livre d'ean 9782809457025");
-		for (Document d : reseau.bibliotheques.get(0).rechercherDocumentsEan("9782809457025")) System.out.println(d);
-		//Il rend le livre a le meme biblio
-		u0.rendre(doc, reseau.bibliotheques.get(0));
-		System.out.println("Etat  biblio 0 apres rendu pour le livre d'ean 9782809457025");
-		for (Document d : reseau.bibliotheques.get(0).rechercherDocumentsEan("9782809457025")) System.out.println(d);
-		//On reemprunte le livre pour tester dans une autre bilio ou la personne n'ets aps inscrite
-		u0.emprunter(doc, reseau.bibliotheques.get(0));
-		System.out.println("Etat  biblio 0 apres emprunt pour le livre d'ean 9782809457025");
-		for (Document d : reseau.bibliotheques.get(0).rechercherDocumentsEan("9782809457025")) System.out.println(d);
-		//On va le rendre a une autre biblio sans etre inscrit (ne marche pas)
-		System.out.println("Etat  biblio 0 avant rendu pour le livre d'ean 9782809457025");
-		for (Document d : reseau.bibliotheques.get(0).rechercherDocumentsEan("9782809457025")) System.out.println(d);
-		System.out.println("Etat  biblio 1 avant rendu pour le livre d'ean 9782809457025");
-		for (Document d : reseau.bibliotheques.get(1).rechercherDocumentsEan("9782809457025")) System.out.println(d);
-		u0.rendre(doc, reseau.bibliotheques.get(1));
-		System.out.println("Etat  biblio 0 apres rendu pour le livre d'ean 9782809457025");
-		for (Document d : reseau.bibliotheques.get(0).rechercherDocumentsEan("9782809457025")) System.out.println(d);
-		System.out.println("Etat  biblio 1 apres rendu pour le livre d'ean 9782809457025");
-		for (Document d : reseau.bibliotheques.get(1).rechercherDocumentsEan("9782809457025")) System.out.println(d);
-		//On inscrit la personne a la biblio 1
-		Utilisateur u1 = reseau.bibliotheques.get(1).inscrire(p);
-		//On retente de rendre le livre
-		System.out.println("Inscription a biblio 1");
-		u0.rendre(doc, reseau.bibliotheques.get(1));
-		System.out.println("Etat  biblio 0 apres rendu pour le livre d'ean 9782809457025");
-		for (Document d : reseau.bibliotheques.get(0).rechercherDocumentsEan("9782809457025")) System.out.println(d);
-		System.out.println("Etat  biblio 1 apres rendu pour le livre d'ean 9782809457025");
-		for (Document d : reseau.bibliotheques.get(1).rechercherDocumentsEan("9782809457025")) System.out.println(d);
-		*/
-		
 
 		sc.close();
 	}
@@ -393,6 +357,10 @@ public class Reseau {
 		for(Bibliotheque biblio : reseau.bibliotheques) {
 			if(biblio.getNom().contentEquals(nomBibliotheque))
 				recherche.add(biblio);
+		}
+		if(recherche.size() < 1) {
+			System.out.println("Aucunue Bibliotheque trouvee avec ce nom");
+			return null;
 		}
 		if (recherche.size() > 1) {
 			System.out.println("Nous avons trouve plusieurs bibliotheques correspondant a votre recherche. ");
