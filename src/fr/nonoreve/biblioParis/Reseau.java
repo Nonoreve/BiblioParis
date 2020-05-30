@@ -174,11 +174,12 @@ public class Reseau {
 		System.out.println();
 
 		if (!stop) {
-			final String[] commandes = { "stop", "help", "ajouter", "inscrire", "distribuer" };
+			final String[] commandes = { "stop", "help", "ajouter", "inscrire", "distribuer", "consulter" };
 			final String[] desc = { "Arrete l'application.", "Affiche l'aide.",
-					"Ajoute un personne, un document ou une bibliotheque. (ajouter <document|bibliotheque|personne> <arguments>)",
-					"Inscrit une personne dans une bibliotheque.",
-					"Distribue un document a une bibliotheque. (distribuer <nomBilbiotheque> <eanDocument> <exemplaires>)" };
+					"Ajoute un personne, un document ou une bibliotheque. (ajouter <document|bibliotheque|personne> <arguments> [arguments] ... [arguments])",
+					"Inscrit une personne dans une bibliotheque. (inscrire <nomUtilisateur> <prenomUtilisateur> <nomBibliotheque>)",
+					"Distribue un document a une bibliotheque. (distribuer <nomBilbiotheque> <eanDocument> <exemplaires>)",
+					"Affiche le resultat d'une recherche. (non implemente)" };
 			System.out.println("\n\nCommandes disponibles : ");
 			for (int i = 0; i < commandes.length; i++) {
 				System.out.print(commandes[i] + " ");
@@ -215,7 +216,37 @@ public class Reseau {
 					continue;
 				}
 
-				if (command.contentEquals(commandes[3])) { // DISTRTIBUER
+				if (command.contentEquals(commandes[3])) { // INSCRIRE
+					if (arguments == null || arguments.length != 3) {
+						System.out.println("Mauvais nombre d'arguments. (Voir help)");
+						continue;
+					}
+					List<Personne> recherchePersonnes = new ArrayList<>();
+					for (Personne mec : reseau.personnes) {
+						if(mec.getNom().contentEquals(arguments[0]) && mec.getPrenom().contentEquals(arguments[1]))
+							recherchePersonnes.add(mec);
+					}
+					Personne elut;
+					if (recherchePersonnes.size() > 1) {
+						System.out.println("Nous avons trouve plusieurs personnes correspondant a votre recherche. ");
+						Personne citoyen;
+						for (int i = 0; i < recherchePersonnes.size(); i++) {
+							citoyen = recherchePersonnes.get(i);
+							System.out.println("[" + i + "] " + citoyen);
+						}
+						System.out.println("Qui choisissez-vous ?");
+						int choix = sc.nextInt();
+						elut = recherchePersonnes.get(choix);
+					} else {
+						elut = recherchePersonnes.get(0);
+					}
+
+					Bibliotheque biblio = rechercherBibliotheque(arguments[2], reseau);
+					biblio.inscrire(elut);
+					continue;
+				}
+
+				if (command.contentEquals(commandes[4])) { // DISTRTIBUER
 					if (arguments == null || arguments.length != 3) {
 						System.out.println("Mauvais nombre d'arguments. (Voir help)");
 						continue;
@@ -232,7 +263,7 @@ public class Reseau {
 						System.out.println("Le minimum d'exemplaires est 1");
 						continue;
 					}
-					Bibliotheque biblio = rechercherBibliotheque();
+					Bibliotheque biblio = rechercherBibliotheque(arguments[0], reseau);
 					List<Document> recherche = reseau.rechercherDocumentsEan(arguments[1]);
 					if (recherche.size() > 1) {
 						System.out.println("Erreur plusieurs documents trouves avec ean " + arguments[1]);
@@ -283,9 +314,25 @@ public class Reseau {
 		sc.close();
 	}
 
-	private static Bibliotheque rechercherBibliotheque() {
-
-		return null;
+	private static Bibliotheque rechercherBibliotheque(String nomBibliotheque, Reseau reseau) {
+		List<Bibliotheque> recherche = new ArrayList<>();
+		for(Bibliotheque biblio : reseau.bibliotheques) {
+			if(biblio.getNom().contentEquals(nomBibliotheque))
+				recherche.add(biblio);
+		}
+		if (recherche.size() > 1) {
+			System.out.println("Nous avons trouve plusieurs bibliotheques correspondant a votre recherche. ");
+			Bibliotheque bibli;
+			for (int i = 0; i < recherche.size(); i++) {
+				bibli = recherche.get(i);
+				System.out.println("[" + i + "] " + bibli);
+			}
+			Scanner sc = new Scanner(System.in);
+			System.out.println("Qui choisissez-vous ?");
+			int choix = sc.nextInt();
+			return recherche.get(choix);
+		}
+		return recherche.get(0);
 	}
 
 	private static void commandeAjoute(String[] arguments, Reseau reseau) {
