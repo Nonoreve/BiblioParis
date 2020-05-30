@@ -267,4 +267,9 @@ public class Bibliotheque {
 		return lstDocuTrie;
 	}
 
+	@Override
+	public String toString() {
+		return "Bibliotheque :\n\tNOM : " + nom + ", MAX_EMPRUNT : " + maxEmprunt + "\n\tADDRESSE : " + adresse;
+	}
+
 }

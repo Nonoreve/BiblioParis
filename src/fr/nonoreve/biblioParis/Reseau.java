@@ -189,7 +189,7 @@ public class Reseau {
 				System.out.print("$~: ");
 				String[] commandLine = sc.nextLine().split(" ");
 				String command = commandLine[0];
-				if (command.contentEquals("stop"))
+				if (command.contentEquals("stop")) // STOP
 					stop = true;
 				String[] arguments = null;
 				if (commandLine.length > 1) {
@@ -207,7 +207,7 @@ public class Reseau {
 				}
 
 				if (command.contentEquals(commandes[2])) { // AJOUTE
-					if (arguments == null || arguments.length <= 1) {
+					if (arguments == null || arguments.length < 1) {
 						System.out.println("Mauvais nombre d'arguments. (Voir help)");
 						continue;
 					}
@@ -341,17 +341,36 @@ public class Reseau {
 						numeroSerie, arguments[9]);
 			}
 			reseau.documents.put(arguments[2], doc); // la verif de l'ean est faite au debut de la fonction
-			System.out.println("Document ajoute : " + doc);
+			System.out.println("Document cree : " + doc + "\nVous pouvez utiliser la commande distribuer pour l'ajouter a une biblioteque.");
 			return;
 		}
 		if (arguments[0].contentEquals("bibliotheque")) {
+			if(arguments.length < 4) {
+				System.out.println("Mauvais nombre d'arguments. usage : ajouter bibliotheque <nom> <maxEmprunt> <adresse> [complementAdresse] ... [complementAdresse]");
+				return;
+			}
 
+			Integer maxEmprunt;
+			try {
+				maxEmprunt = Integer.parseInt(arguments[2]);
+			} catch (Exception exception) {
+				System.out.println("Max emprunt doit etre un nombre.");
+				return;
+			}
+			String addr = "";
+			for(int i = 3; i < arguments.length; i++) {
+				addr += arguments[i] + ' ';
+			}
+			Bibliotheque bibli = new Bibliotheque(arguments[1], addr, maxEmprunt);
+			reseau.bibliotheques.add(bibli);
+			System.out.println("Bibliotheque creee : " + bibli);
 			return;
 		}
 		if (arguments[0].contentEquals("personne")) {
 
 			return;
 		}
+		System.out.println("Argument inconnu. Voir help.");
 	}
 
 	private static boolean checkFichier(String cheminFichier) {
