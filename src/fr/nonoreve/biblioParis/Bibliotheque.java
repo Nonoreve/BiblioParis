@@ -138,7 +138,7 @@ public class Bibliotheque {
 	 * @param finTemps
 	 * @return
 	 */
-	public void NbDocTypeSerie(int debTemps, int finTemps) {
+	public void nbDocTypeTemps(int debTemps, int finTemps) {
 		int cptAutres = 0, cptBandeDessinee = 0, cptCarte = 0, cptCD = 0, cptDVD = 0, cptEnregistrementMusical = 0,
 				cptLivre = 0, cptPartition = 0, cptRevue = 0, cptMethode = 0;
 		for (Document d : hmDocu.keySet()) {

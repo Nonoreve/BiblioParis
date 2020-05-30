@@ -183,7 +183,7 @@ public class Reseau {
 			for (int i = 0; i < commandes.length; i++) {
 				System.out.print(commandes[i] + " ");
 			}
-			System.out.println();
+			System.out.println("\n");
 
 			while (!stop) {
 				System.out.print("$~: ");
@@ -341,12 +341,14 @@ public class Reseau {
 						numeroSerie, arguments[9]);
 			}
 			reseau.documents.put(arguments[2], doc); // la verif de l'ean est faite au debut de la fonction
-			System.out.println("Document cree : " + doc + "\nVous pouvez utiliser la commande distribuer pour l'ajouter a une biblioteque.");
+			System.out.println("Document cree : " + doc
+					+ "\nVous pouvez utiliser la commande distribuer pour l'ajouter a une biblioteque.");
 			return;
 		}
 		if (arguments[0].contentEquals("bibliotheque")) {
-			if(arguments.length < 4) {
-				System.out.println("Mauvais nombre d'arguments. usage : ajouter bibliotheque <nom> <maxEmprunt> <adresse> [complementAdresse] ... [complementAdresse]");
+			if (arguments.length < 4) {
+				System.out.println(
+						"Mauvais nombre d'arguments. usage : ajouter bibliotheque <nom> <maxEmprunt> <adresse> [complementAdresse] ... [complementAdresse]");
 				return;
 			}
 
@@ -358,7 +360,7 @@ public class Reseau {
 				return;
 			}
 			String addr = "";
-			for(int i = 3; i < arguments.length; i++) {
+			for (int i = 3; i < arguments.length; i++) {
 				addr += arguments[i] + ' ';
 			}
 			Bibliotheque bibli = new Bibliotheque(arguments[1], addr, maxEmprunt);
@@ -367,7 +369,14 @@ public class Reseau {
 			return;
 		}
 		if (arguments[0].contentEquals("personne")) {
-
+			if (arguments.length < 3) {
+				System.out.println("Mauvais nombre d'arguments. usage : ajouter personne <nom> <prenom>");
+				return;
+			}
+			Personne mec = new Personne(arguments[1], arguments[2]);
+			reseau.personnes.add(mec);
+			System.out.println(
+					"Personne creee : " + mec + "\nUtilisez la commande inscrire pour l'ajouter a une bibliotheque.");
 			return;
 		}
 		System.out.println("Argument inconnu. Voir help.");

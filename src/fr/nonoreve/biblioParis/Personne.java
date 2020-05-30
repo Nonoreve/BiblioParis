@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Personne {
-	
+
 	private String nom;
 	private String prenom;
 	private List<Utilisateur> lstCarte;
-	
+
 	public Personne(String nom, String prenom) {
 		this.nom = nom;
 		this.prenom = prenom;
@@ -35,5 +35,9 @@ public class Personne {
 		this.prenom = prenom;
 	}
 
-	
+	@Override
+	public String toString() {
+		return "Personne : NOM : " + nom + ", PRENOM : " + prenom;
+	}
+
 }

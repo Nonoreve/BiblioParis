@@ -78,7 +78,7 @@ public abstract class Document {
 	}
 
 	/**
-	 * @return the ordreDansSerie
+	 * @return ordreDansSerie
 	 */
 	public Integer getOrdreDansSerie() {
 		return ordreDansSerie;
