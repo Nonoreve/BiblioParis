@@ -287,6 +287,8 @@ public class Reseau {
 
 		// TODO faire tous les test necessaires
 		
+		//Test consultation reseau
+		
 		//Test de consultation de tout les documents du reseau
 		//for (Document d : reseau.rechercherDocuments()) System.out.println(d);
 		
@@ -308,8 +310,36 @@ public class Reseau {
 		//Test de consultation des documents du reseau selon la serie
 		//for (Document d : reseau.rechercherDocumentsSerie("Calamity Mamie")) System.out.println(d);
 		
-		//Test de consultation des documents par type dans un intervalle de temps
+		//Test de consultation des documents du reseau par type dans un intervalle de temps
 		//reseau.nbDocTypeTemps(2005, 2015);
+		
+		
+		
+		//Test consultation Biblio
+		
+		//Test de consultation de tout les documents de la biblio
+		//for (Document d : reseau.bibliotheques.get(0).rechercherDocuments()) System.out.println(d);
+		
+		//Test de consultation des documents de la biblio selon le prenom d'auteur
+		//for (Document d : reseau.bibliotheques.get(0).rechercherDocumentsPrenomAuteur("Davis")) System.out.println(d);
+		
+		//Test de consultation des documents de la biblio selon le nom d'auteur
+		//for (Document d : reseau.bibliotheques.get(0).rechercherDocumentsNomAuteur("Miki")) System.out.println(d);
+		
+		//Test de consultation des documents de la biblio selon le nom et prenom d'auteur
+		//for (Document d : reseau.bibliotheques.get(0).rechercherDocumentsNomPrenomAuteur("Gabrielle","Vincent")) System.out.println(d);
+		
+		//Test de consultation des documents de la biblio selon l'ean
+		//for (Document d : reseau.bibliotheques.get(0).rechercherDocumentsEan("9782021089707")) System.out.println(d);
+		
+		//Test de consultation des documents de la biblio selon l'isbn
+		//for (Document d : reseau.bibliotheques.get(0).rechercherDocumentsIsbn("978-2-8001-4765-9")) System.out.println(d);
+		
+		//Test de consultation des documents de la biblio selon la serie
+		//for (Document d : reseau.bibliotheques.get(0).rechercherDocumentsSerie("Garfield")) System.out.println(d);
+		
+		//Test de consultation des documents de la biblio par type dans un intervalle de temps
+		//reseau.bibliotheques.get(0).nbDocTypeTemps(2005, 2015);
 
 		sc.close();
 	}
