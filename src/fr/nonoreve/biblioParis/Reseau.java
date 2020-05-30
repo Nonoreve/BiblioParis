@@ -255,6 +255,11 @@ public class Reseau {
 		}
 
 		// TODO faire tous les test necessaires
+		//Test de consultation de tout les documents du reseau
+		System.out.println("TEST");
+		
+		for (Document d : reseau.rechercherDocuments()) System.out.println(d);
+		
 
 		sc.close();
 	}
@@ -395,7 +400,11 @@ public class Reseau {
 	 * Liste les documents present dans le reseau
 	 */
 	public List<Document> rechercherDocuments() {
-		return Arrays.asList(documents.entrySet().toArray(new Document[documents.size()]));
+		List<Document> result = new ArrayList<Document>();
+		documents.forEach((s, d) -> {
+			result.add(d);
+		});
+		return result;
 	}
 
 	/**
