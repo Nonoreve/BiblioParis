@@ -255,11 +255,30 @@ public class Reseau {
 		}
 
 		// TODO faire tous les test necessaires
+		
 		//Test de consultation de tout les documents du reseau
-		System.out.println("TEST");
+		//for (Document d : reseau.rechercherDocuments()) System.out.println(d);
 		
-		for (Document d : reseau.rechercherDocuments()) System.out.println(d);
+		//Test de consultation des documents du reseau selon le prenom d'auteur
+		//for (Document d : reseau.rechercherDocumentsPrenomAuteur("Boris")) System.out.println(d);
 		
+		//Test de consultation des documents du reseau selon le nom d'auteur
+		//for (Document d : reseau.rechercherDocumentsNomAuteur("Aurelia")) System.out.println(d);
+		
+		//Test de consultation des documents du reseau selon le nom et prenom d'auteur
+		//for (Document d : reseau.rechercherDocumentsNomPrenomAuteur("Aurelia","Bolle")) System.out.println(d);
+		
+		//Test de consultation des documents du reseau selon l'ean
+		//for (Document d : reseau.rechercherDocumentsEan("9782742429158")) System.out.println(d);
+		
+		//Test de consultation des documents du reseau selon l'isbn
+		//for (Document d : reseau.rechercherDocumentsIsbn("978-2-501-06545-0")) System.out.println(d);
+		
+		//Test de consultation des documents du reseau selon la serie
+		//for (Document d : reseau.rechercherDocumentsSerie("Calamity Mamie")) System.out.println(d);
+		
+		//Test de consultation des documents par type dans un intervalle de temps
+		//reseau.nbDocTypeTemps(2005, 2015);
 
 		sc.close();
 	}
@@ -494,7 +513,7 @@ public class Reseau {
 	 * @param finTemps
 	 * @return
 	 */
-	public void NbDocTypeSerie(int debTemps, int finTemps) {
+	public void nbDocTypeTemps(int debTemps, int finTemps) {
 		int cptAutres = 0, cptBandeDessinee = 0, cptCarte = 0, cptCD = 0, cptDVD = 0, cptEnregistrementMusical = 0,
 				cptLivre = 0, cptPartition = 0, cptRevue = 0, cptMethode = 0;
 		for (String ean : documents.keySet()) {
@@ -560,7 +579,7 @@ public class Reseau {
 	 * 
 	 * @param serie
 	 */
-	public void listerDocumentsSerie(String serie) {
+	public List<Document> rechercherDocumentsSerie(String serie) {
 		List<Document> lstDocuTrie = new ArrayList<Document>();
 		for (String ean : documents.keySet()) {
 			Document d = documents.get(ean);
@@ -573,6 +592,7 @@ public class Reseau {
 				return o1.getDatePublication().compareTo(o2.getDatePublication());
 			}
 		});
+		return lstDocuTrie;
 	}
 
 }
