@@ -340,6 +340,50 @@ public class Reseau {
 		
 		//Test de consultation des documents de la biblio par type dans un intervalle de temps
 		//reseau.bibliotheques.get(0).nbDocTypeTemps(2005, 2015);
+		
+		/*
+		//test d'inscription, emprunt, rendu
+		Personne p = new Personne("Jean","Dupond");
+		Utilisateur u0 = reseau.bibliotheques.get(0).inscrire(p);
+		Document doc = null;
+		System.out.println("Etat  biblio 0 avant emprunt pour le livre d'ean 9782809457025");
+		//On cherche le document pour l'ean et on le garde dans une nouvelle variable pour simplifie les etapes suivantes
+		for (Document d : reseau.bibliotheques.get(0).rechercherDocumentsEan("9782809457025")) {
+			System.out.println(d);
+			doc = d;
+		}
+		u0.emprunter(doc, reseau.bibliotheques.get(0));
+		System.out.println("Etat  biblio 0 apres emprunt pour le livre d'ean 9782809457025");
+		for (Document d : reseau.bibliotheques.get(0).rechercherDocumentsEan("9782809457025")) System.out.println(d);
+		//Il rend le livre a le meme biblio
+		u0.rendre(doc, reseau.bibliotheques.get(0));
+		System.out.println("Etat  biblio 0 apres rendu pour le livre d'ean 9782809457025");
+		for (Document d : reseau.bibliotheques.get(0).rechercherDocumentsEan("9782809457025")) System.out.println(d);
+		//On reemprunte le livre pour tester dans une autre bilio ou la personne n'ets aps inscrite
+		u0.emprunter(doc, reseau.bibliotheques.get(0));
+		System.out.println("Etat  biblio 0 apres emprunt pour le livre d'ean 9782809457025");
+		for (Document d : reseau.bibliotheques.get(0).rechercherDocumentsEan("9782809457025")) System.out.println(d);
+		//On va le rendre a une autre biblio sans etre inscrit (ne marche pas)
+		System.out.println("Etat  biblio 0 avant rendu pour le livre d'ean 9782809457025");
+		for (Document d : reseau.bibliotheques.get(0).rechercherDocumentsEan("9782809457025")) System.out.println(d);
+		System.out.println("Etat  biblio 1 avant rendu pour le livre d'ean 9782809457025");
+		for (Document d : reseau.bibliotheques.get(1).rechercherDocumentsEan("9782809457025")) System.out.println(d);
+		u0.rendre(doc, reseau.bibliotheques.get(1));
+		System.out.println("Etat  biblio 0 apres rendu pour le livre d'ean 9782809457025");
+		for (Document d : reseau.bibliotheques.get(0).rechercherDocumentsEan("9782809457025")) System.out.println(d);
+		System.out.println("Etat  biblio 1 apres rendu pour le livre d'ean 9782809457025");
+		for (Document d : reseau.bibliotheques.get(1).rechercherDocumentsEan("9782809457025")) System.out.println(d);
+		//On inscrit la personne a la biblio 1
+		Utilisateur u1 = reseau.bibliotheques.get(1).inscrire(p);
+		//On retente de rendre le livre
+		System.out.println("Inscription a biblio 1");
+		u0.rendre(doc, reseau.bibliotheques.get(1));
+		System.out.println("Etat  biblio 0 apres rendu pour le livre d'ean 9782809457025");
+		for (Document d : reseau.bibliotheques.get(0).rechercherDocumentsEan("9782809457025")) System.out.println(d);
+		System.out.println("Etat  biblio 1 apres rendu pour le livre d'ean 9782809457025");
+		for (Document d : reseau.bibliotheques.get(1).rechercherDocumentsEan("9782809457025")) System.out.println(d);
+		*/
+		
 
 		sc.close();
 	}
