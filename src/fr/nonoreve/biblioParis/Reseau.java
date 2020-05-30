@@ -223,7 +223,7 @@ public class Reseau {
 					}
 					List<Personne> recherchePersonnes = new ArrayList<>();
 					for (Personne mec : reseau.personnes) {
-						if(mec.getNom().contentEquals(arguments[0]) && mec.getPrenom().contentEquals(arguments[1]))
+						if (mec.getNom().contentEquals(arguments[0]) && mec.getPrenom().contentEquals(arguments[1]))
 							recherchePersonnes.add(mec);
 					}
 					Personne elut;
@@ -241,11 +241,11 @@ public class Reseau {
 						elut = recherchePersonnes.get(0);
 					}
 					String nomBiblio = arguments[2];
-					for(int i = 3; i < arguments.length; i++) {
+					for (int i = 3; i < arguments.length; i++) {
 						nomBiblio += ' ' + arguments[i];
 					}
 					Bibliotheque biblio = rechercherBibliotheque(nomBiblio, reseau);
-					if(biblio != null)
+					if (biblio != null)
 						biblio.inscrire(elut);
 					continue;
 				}
@@ -268,11 +268,11 @@ public class Reseau {
 						continue;
 					}
 					String nomBiblio = arguments[2];
-					for(int i = 3; i < arguments.length; i++) {
+					for (int i = 3; i < arguments.length; i++) {
 						nomBiblio += ' ' + arguments[i];
 					}
 					Bibliotheque biblio = rechercherBibliotheque(nomBiblio, reseau);
-					if(biblio == null)
+					if (biblio == null)
 						continue;
 					List<Document> recherche = reseau.rechercherDocumentsEan(arguments[1]);
 					if (recherche.size() > 1) {
@@ -323,6 +323,7 @@ public class Reseau {
 		
 		
 		
+		
 		//Test consultation Biblio
 		
 		//Test de consultation de tout les documents de la biblio
@@ -348,17 +349,78 @@ public class Reseau {
 		
 		//Test de consultation des documents de la biblio par type dans un intervalle de temps
 		//reseau.bibliotheques.get(0).nbDocTypeTemps(2005, 2015);
+		
+		/*
+		//test d'inscription, emprunt, rendu
+		Personne p = new Personne("Jean","Dupond");
+		Utilisateur u0 = reseau.bibliotheques.get(0).inscrire(p);
+		Document doc = null;
+		System.out.println("Etat  biblio 0 avant emprunt pour le document d'ean 9782809457025");
+		//On cherche le document pour l'ean et on le garde dans une nouvelle variable pour simplifie les etapes suivantes
+		for (Document d : reseau.bibliotheques.get(0).rechercherDocumentsEan("9782809457025")) {
+			System.out.println(d);
+			doc = d;
+		}
+		u0.emprunter(doc, reseau.bibliotheques.get(0));
+		System.out.println("Etat  biblio 0 apres emprunt pour le document d'ean 9782809457025");
+		for (Document d : reseau.bibliotheques.get(0).rechercherDocumentsEan("9782809457025")) System.out.println(d);
+		//Il rend le document a la meme biblio
+		u0.rendre(doc, reseau.bibliotheques.get(0));
+		System.out.println("Etat  biblio 0 apres rendu pour le document d'ean 9782809457025");
+		for (Document d : reseau.bibliotheques.get(0).rechercherDocumentsEan("9782809457025")) System.out.println(d);
+		//On reemprunte le livre pour tester dans une autre bilio ou la personne n'ets aps inscrite
+		u0.emprunter(doc, reseau.bibliotheques.get(0));
+		System.out.println("Etat  biblio 0 apres emprunt pour le document d'ean 9782809457025");
+		for (Document d : reseau.bibliotheques.get(0).rechercherDocumentsEan("9782809457025")) System.out.println(d);
+		//On va le rendre a une autre biblio sans etre inscrit (ne marche pas)
+		System.out.println("Etat  biblio 0 avant rendu pour le document d'ean 9782809457025");
+		for (Document d : reseau.bibliotheques.get(0).rechercherDocumentsEan("9782809457025")) System.out.println(d);
+		System.out.println("Etat  biblio 1 avant rendu pour le document d'ean 9782809457025");
+		for (Document d : reseau.bibliotheques.get(1).rechercherDocumentsEan("9782809457025")) System.out.println(d);
+		u0.rendre(doc, reseau.bibliotheques.get(1));
+		System.out.println("Etat  biblio 0 apres rendu pour le document d'ean 9782809457025");
+		for (Document d : reseau.bibliotheques.get(0).rechercherDocumentsEan("9782809457025")) System.out.println(d);
+		System.out.println("Etat  biblio 1 apres rendu pour le document d'ean 9782809457025");
+		for (Document d : reseau.bibliotheques.get(1).rechercherDocumentsEan("9782809457025")) System.out.println(d);
+		//On inscrit la personne a la biblio 1
+		Utilisateur u1 = reseau.bibliotheques.get(1).inscrire(p);
+		//On retente de rendre le document
+		System.out.println("Inscription a biblio 1");
+		u0.rendre(doc, reseau.bibliotheques.get(1));
+		System.out.println("Etat  biblio 0 apres rendu pour le document d'ean 9782809457025");
+		for (Document d : reseau.bibliotheques.get(0).rechercherDocumentsEan("9782809457025")) System.out.println(d);
+		System.out.println("Etat  biblio 1 apres rendu pour le document d'ean 9782809457025");
+		for (Document d : reseau.bibliotheques.get(1).rechercherDocumentsEan("9782809457025")) System.out.println(d);
+		*/
+		
+		
+		/*
+		//test d'echange de document, pour le test, document d'ean 9782365770651
+		Document docTestEchange = null;
+		for (Document d : reseau.bibliotheques.get(0).rechercherDocumentsEan("9782365770651")) {
+			docTestEchange = d;
+		}
+		System.out.println("Etat  biblio 0 avant echange pour le document d'ean 9782365770651");
+		for (Document d : reseau.bibliotheques.get(0).rechercherDocumentsEan("9782365770651")) System.out.println(d);
+		System.out.println("Etat  biblio 1 avant echange pour le document d'ean 9782365770651");
+		for (Document d : reseau.bibliotheques.get(1).rechercherDocumentsEan("9782365770651")) System.out.println(d);
+		reseau.bibliotheques.get(0).echanger(docTestEchange, reseau.bibliotheques.get(1));
+		System.out.println("Etat  biblio 0 apres echange pour le document d'ean 9782365770651");
+		for (Document d : reseau.bibliotheques.get(0).rechercherDocumentsEan("9782365770651")) System.out.println(d);
+		System.out.println("Etat  biblio 1 apres echange pour le document d'ean 9782365770651");
+		for (Document d : reseau.bibliotheques.get(1).rechercherDocumentsEan("9782365770651")) System.out.println(d);
+		*/
 
 		sc.close();
 	}
 
 	private static Bibliotheque rechercherBibliotheque(String nomBibliotheque, Reseau reseau) {
 		List<Bibliotheque> recherche = new ArrayList<>();
-		for(Bibliotheque biblio : reseau.bibliotheques) {
-			if(biblio.getNom().contentEquals(nomBibliotheque))
+		for (Bibliotheque biblio : reseau.bibliotheques) {
+			if (biblio.getNom().contentEquals(nomBibliotheque))
 				recherche.add(biblio);
 		}
-		if(recherche.size() < 1) {
+		if (recherche.size() < 1) {
 			System.out.println("Aucunue Bibliotheque trouvee avec ce nom");
 			return null;
 		}
